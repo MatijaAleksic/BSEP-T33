@@ -7,7 +7,7 @@ public class Admin {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    protected Integer id;
+    protected Long id;
 
     @Column(name = "username", unique = true, nullable = false)
     protected String username;
@@ -21,18 +21,18 @@ public class Admin {
     public Admin() {
     }
 
-    public Admin(Integer id, String username, String password, String email) {
+    public Admin(Long id, String username, String password, String email) {
         this.id = id;
         this.username = username;
         this.password = password;
         this.email = email;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
