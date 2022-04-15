@@ -28,7 +28,7 @@ public class AdminService {
     public Admin findOne(Long id) throws UserNotFoundException {
         return repository
                 .findById(id)
-                .orElseThrow(() -> new UserNotFoundException("Cannot find user by username: " + id.toString()));
+                .orElseThrow(() -> new UserNotFoundException("Cannot find user by id: " + id.toString()));
     }
 
     public Admin save(Admin entity) throws Exception {
@@ -57,7 +57,7 @@ public class AdminService {
             repository.delete(existingAdmin);
         }
         else{
-            throw new UserNotFoundException("Cannot find user by username: " + existingAdmin.getId().toString());
+            throw new UserNotFoundException("Cannot find user by username: " + id);
         }
     }
 }
