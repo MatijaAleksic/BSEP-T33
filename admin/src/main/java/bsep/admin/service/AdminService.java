@@ -6,6 +6,7 @@ import bsep.admin.repository.AdminRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 
 @Service
@@ -31,7 +32,7 @@ public class AdminService {
                 .orElseThrow(() -> new UserNotFoundException("Cannot find user by id: " + id.toString()));
     }
 
-    public Admin save(Admin entity) throws Exception {
+    public Admin save(Admin entity) {
         return repository.save(entity);
     }
 
@@ -51,10 +52,11 @@ public class AdminService {
     }
 
 
-    public void delete(Long id) throws UserNotFoundException {
+    public boolean delete(Long id) throws UserNotFoundException {
         Admin existingAdmin = findOne(id);
         if(existingAdmin!=null){
             repository.delete(existingAdmin);
+            return true;
         }
         else{
             throw new UserNotFoundException("Cannot find user by username: " + id);

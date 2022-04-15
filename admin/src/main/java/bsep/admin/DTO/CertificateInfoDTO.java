@@ -34,6 +34,14 @@ public class CertificateInfoDTO {
 
     private List<CertificateInfoDTO> children;
 
+    public CertificateInfoDTO(@NotNull @NotBlank String commonName, @NotNull @NotBlank String fullName, @NotNull @NotBlank @Email String email, @NotNull Boolean revoked, @NotNull @NotBlank String revocationReason, @NotNull boolean isCA) {
+        this.commonName = commonName;
+        this.fullName = fullName;
+        this.email = email;
+        this.revoked = revoked;
+        this.revocationReason = revocationReason;
+        this.isCA = isCA;
+    }
 
     public CertificateInfoDTO() {
         this.revoked = false;

@@ -47,10 +47,11 @@ public class CertificateRequestService {
 
 
 
-    public void delete(Long id) throws CertificateNotFoundException {
+    public boolean delete(Long id) throws CertificateNotFoundException {
         CertificateRequest cr = findOne(id);
         if (cr != null) {
             certificateRequestRepository.delete(cr);
+            return true;
         }
         else{
             throw new CertificateNotFoundException("Cannot find certificate by id: " + id);

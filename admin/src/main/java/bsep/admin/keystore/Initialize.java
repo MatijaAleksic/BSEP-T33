@@ -119,11 +119,18 @@ public class Initialize {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
         // Datumi od kad do kad vazi sertifikat
-        LocalDateTime startDate = LocalDateTime.now();
-        startDate.format(dtf);
+//        LocalDateTime startDate = LocalDateTime.now();
+//        startDate.format(dtf);
+//
+//        LocalDateTime endDate = startDate.plusYears(2);
+//        endDate.format(dtf);
 
-        LocalDateTime endDate = startDate.plusYears(2);
-        endDate.format(dtf);
+        Date startDate = new Date();
+        //Izdaje se sertifikat na dve godine
+        Calendar c = Calendar.getInstance();
+        c.setTime(startDate);
+        c.add(Calendar.YEAR, 10);
+        Date endDate = c.getTime();
 
         Calendar curCal = new GregorianCalendar(TimeZone.getDefault());
         curCal.setTimeInMillis(System.currentTimeMillis());
@@ -133,9 +140,9 @@ public class Initialize {
         // klasa X500NameBuilder pravi X500Name objekat koji predstavlja podatke o vlasniku
         X500NameBuilder builder = new X500NameBuilder(BCStyle.INSTANCE);
         builder.addRDN(BCStyle.CN, "admin");
-        builder.addRDN(BCStyle.SURNAME, "Matija");
-        builder.addRDN(BCStyle.GIVENNAME, "Aleksic");
-        builder.addRDN(BCStyle.O, "Organizacija");
+        builder.addRDN(BCStyle.SURNAME, "admin");
+        builder.addRDN(BCStyle.GIVENNAME, "admin");
+        builder.addRDN(BCStyle.O, "Administracija");
         builder.addRDN(BCStyle.OU, "OU");
         builder.addRDN(BCStyle.C, "CC");
         builder.addRDN(BCStyle.E, "admin@gmail.com");
@@ -152,7 +159,7 @@ public class Initialize {
 
     }
 
-    private KeyPair generateKeyPair() {
+    public static KeyPair generateKeyPair() {
         try {
             KeyPairGenerator keyGen = KeyPairGenerator.getInstance("RSA");
             SecureRandom random = SecureRandom.getInstance("SHA1PRNG", "SUN");

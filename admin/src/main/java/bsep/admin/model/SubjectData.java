@@ -4,20 +4,27 @@ import org.bouncycastle.asn1.x500.X500Name;
 
 import java.security.PublicKey;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 public class SubjectData {
 
     private PublicKey publicKey;
     private X500Name x500name;
     private String serialNumber;
-    private LocalDateTime startDate;
-    private LocalDateTime endDate;
+    private Date startDate;
+    private Date endDate;
 
-    public SubjectData() {
+    public SubjectData() {  }
 
+    public SubjectData(PublicKey publicKey, X500Name x500name, String serialNumber, Date startDate, Date endDate) {
+        this.publicKey = publicKey;
+        this.x500name = x500name;
+        this.serialNumber = serialNumber;
+        this.startDate = startDate;
+        this.endDate = endDate;
     }
 
-    public SubjectData(X500Name x500name, String serialNumber, LocalDateTime startDate, LocalDateTime endDate) {
+    public SubjectData(X500Name x500name, String serialNumber, Date startDate, Date endDate) {
         this.x500name = x500name;
         this.serialNumber = serialNumber;
         this.startDate = startDate;
@@ -48,19 +55,19 @@ public class SubjectData {
         this.serialNumber = serialNumber;
     }
 
-    public LocalDateTime getStartDate() {
+    public Date getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(LocalDateTime startDate) {
+    public void setStartDate(Date startDate) {
         this.startDate = startDate;
     }
 
-    public LocalDateTime getEndDate() {
+    public Date getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(LocalDateTime endDate) {
+    public void setEndDate(Date endDate) {
         this.endDate = endDate;
     }
 }

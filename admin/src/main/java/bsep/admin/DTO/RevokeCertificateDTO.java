@@ -13,15 +13,11 @@ public class RevokeCertificateDTO {
     @NotBlank
     private String revocationReason;
 
-    @NotNull
-    @NotBlank
-    private String email;
 
     public RevokeCertificateDTO() {
     }
 
-    public RevokeCertificateDTO(String subjectAlias, String revocationReason, String email) {
-        this.email = email;
+    public RevokeCertificateDTO(String subjectAlias, String revocationReason) {
         this.subjectAlias = subjectAlias;
         this.revocationReason = revocationReason;
     }
@@ -42,12 +38,5 @@ public class RevokeCertificateDTO {
         this.revocationReason = revocationReason;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
 }
 
