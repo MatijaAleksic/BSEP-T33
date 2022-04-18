@@ -33,7 +33,11 @@ public class CertificateRequestService {
     {
         return certificateRequestRepository.findByEmail(email);
     }
-
+    
+    public CertificateRequest findByUid(long uid)
+    {
+        return certificateRequestRepository.findByUid(uid);
+    }
 
     public void save(CertificateRequestDTO certificateRequestDTO)
     {
@@ -55,6 +59,18 @@ public class CertificateRequestService {
         }
         else{
             throw new CertificateNotFoundException("Cannot find certificate by id: " + id);
+        }
+
+    }
+    
+    public boolean deleteByUid(Long uid) throws CertificateNotFoundException {
+        CertificateRequest cr = findByUid(uid);
+        if (cr != null) {
+            certificateRequestRepository.delete(cr);
+            return true;
+        }
+        else{
+            throw new CertificateNotFoundException("Cannot find certificate by uid: " + uid);
         }
 
     }

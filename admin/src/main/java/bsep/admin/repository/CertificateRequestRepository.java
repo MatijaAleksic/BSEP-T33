@@ -6,9 +6,8 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CertificateRequestRepository extends JpaRepository<CertificateRequest, Long> {
-
     CertificateRequest findByCommonName(String name);
     CertificateRequest findByUid(Long uid);
     CertificateRequest findByEmail(String email);
-
+    CertificateRequest deleteByUid(Long uid);
 }

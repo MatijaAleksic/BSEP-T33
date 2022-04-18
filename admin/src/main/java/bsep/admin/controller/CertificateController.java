@@ -1,10 +1,14 @@
 package bsep.admin.controller;
 
-import bsep.admin.DTO.CertificateDTO;
-import bsep.admin.DTO.CertificateInfoDTO;
-import bsep.admin.DTO.RevokeCertificateDTO;
-import bsep.admin.service.CertificateRequestService;
-import bsep.admin.service.CertificateService;
+import java.io.IOException;
+import java.security.cert.CRLException;
+import java.security.cert.CRLReason;
+import java.security.cert.Certificate;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bouncycastle.asn1.x500.RDN;
 import org.bouncycastle.asn1.x500.X500Name;
 import org.bouncycastle.asn1.x500.style.BCStyle;
@@ -15,14 +19,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
-import java.io.IOException;
-import java.security.cert.*;
-import java.util.ArrayList;
-import java.util.List;
+import bsep.admin.DTO.CertificateDTO;
+import bsep.admin.DTO.CertificateInfoDTO;
+import bsep.admin.DTO.RevokeCertificateDTO;
+import bsep.admin.service.CertificateRequestService;
+import bsep.admin.service.CertificateService;
 
-@RestController
+//@RestController
+@Controller
 @RequestMapping(value = "/certificate", produces = MediaType.APPLICATION_JSON_VALUE)
 public class CertificateController {
 
@@ -33,7 +44,7 @@ public class CertificateController {
     CertificateRequestService cerRequestInfoService;
 
     @GetMapping
-    public Object findAll() throws CertificateException, CRLException, IOException {
+    public String findAll(Model model) throws CertificateException, CRLException, IOException {
 
         List<Certificate> certificateInfoDTO = certificateService.getAllCertificates();
         List<CertificateInfoDTO> certInfos = new ArrayList<>();
@@ -67,9 +78,9 @@ public class CertificateController {
                     );
             certInfos.add(newEntry);
         }
-
-        return new ResponseEntity<>(certInfos, HttpStatus.OK);
-
+        
+        model.addAttribute("certificatesList", certInfos);
+		return "certificates";
     }
 
     @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -77,7 +88,7 @@ public class CertificateController {
         try {
             certificateService.generateCertificate(certificateDTO);
 
-            //certificateService.createCertificate(certificateDTO);
+            certificateService.createCertificate(certificateDTO);
             cerRequestInfoService.delete(certificateDTO.getId());
             return new ResponseEntity<>("Success", HttpStatus.CREATED);
 

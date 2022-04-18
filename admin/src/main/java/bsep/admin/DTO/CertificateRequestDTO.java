@@ -1,7 +1,6 @@
 package bsep.admin.DTO;
 
 public class CertificateRequestDTO {
-
     private String commonName;
     private String surname;
     private String givenName;
@@ -16,7 +15,7 @@ public class CertificateRequestDTO {
 
     public CertificateRequestDTO(String commonName, String surname, String givenName, String organization,
                                  String organizationUnit, String country, String email, Long uid) {
-        this.commonName = commonName;
+    	this.commonName = commonName;
         this.surname = surname;
         this.givenName = givenName;
         this.organization = organization;

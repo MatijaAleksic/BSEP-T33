@@ -9,7 +9,7 @@ public class CertificateRequest {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    
     @Column(name = "commonName", unique = false, nullable = false)
     private String commonName;
 
@@ -36,7 +36,7 @@ public class CertificateRequest {
 
 
     public CertificateRequest(String commonName, String surname, String givenName, String organization, String organizationUnit, String country, String email, Long uid) {
-        this.commonName = commonName;
+    	this.commonName = commonName;
         this.surname = surname;
         this.givenName = givenName;
         this.organization = organization;
