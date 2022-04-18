@@ -88,7 +88,7 @@ public class CertificateController {
         try {
             certificateService.generateCertificate(certificateDTO);
 
-            certificateService.createCertificate(certificateDTO);
+            //certificateService.createCertificate(certificateDTO);
             cerRequestInfoService.delete(certificateDTO.getId());
             return new ResponseEntity<>("Success", HttpStatus.CREATED);
 

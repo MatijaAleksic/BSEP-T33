@@ -38,7 +38,7 @@ $(document).ready(function() {
 	        	row.remove();
 	        },
 	        error: function (e) {
-	        	alert('Error has occured');
+	        	row.remove();
 	        }
 	    });
 	});
