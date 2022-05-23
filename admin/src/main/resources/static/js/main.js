@@ -78,5 +78,22 @@ $(document).ready(function() {
 	    });
 		
 	});
-	
+
+	$('.js-revoke').on('click', function() {
+		var row = $(this).closest('tr');
+		var subjectAlias = row.find('#email').text();
+
+		$.ajax({
+			type: "PUT",
+			contentType: "application/json",
+			url: "/certificate",
+			data: JSON.stringify({ subjectAlias: subjectAlias, revocationReason: ""}),
+			success: function (data) {
+				alert('Request successfully revoked');
+			},
+			error: function (e) {
+				alert('Error has occured');
+			}
+		});
+	});
 });
