@@ -11,22 +11,20 @@ interface DisplayMessage {
 }
 
 @Component({
-  selector: 'app-sign-up',
-  templateUrl: './sign-up.component.html',
-  styleUrls: ['./sign-up.component.css']
+  selector: 'app-add-user',
+  templateUrl: './add-user.component.html',
+  styleUrls: ['./add-user.component.css']
 })
-export class SignUpComponent implements OnInit {
 
-  title = 'Sign up';
+export class AddUserComponent implements OnInit {
+
   form: FormGroup;
-
   /**
    * Boolean used in telling the UI
    * that the form has been submitted
    * and is awaiting a response
    */
   submitted = false;
-
   /**
    * Notification message from received
    * form request or router
@@ -35,16 +33,14 @@ export class SignUpComponent implements OnInit {
 
   returnUrl: string;
   private ngUnsubscribe: Subject<void> = new Subject<void>();
+  roles: string[] = ["ROLE_USER", "ROLE_ADMIN"]
 
   constructor(
     private userService: UserService,
-    private authService: AuthService,
     private router: Router,
     private route: ActivatedRoute,
     private formBuilder: FormBuilder
-  ) {
-
-  }
+  ) { }
 
   ngOnInit() {
     this.route.params
@@ -57,9 +53,10 @@ export class SignUpComponent implements OnInit {
     this.form = this.formBuilder.group({
       username: ['', Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(64)])],
       password: ['', Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(32)])],
-      firstname: [''],
-      lastname: [''],
-      email: ['']
+      firstName: ['',Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(32)])],
+      lastName: ['',Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(32)])],
+      email: ['',Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(32), Validators.email])],
+      role: ['',Validators.compose([Validators.required])]
     });
   }
 
@@ -75,21 +72,32 @@ export class SignUpComponent implements OnInit {
     this.notification = undefined;
     this.submitted = true;
 
-    this.authService.signup(this.form.value)
-      .subscribe(data => {
-        console.log(data);
-        this.authService.login(this.form.value).subscribe(() => {
-          this.userService.getMyInfo().subscribe();
-        });
-        this.router.navigate([this.returnUrl]);
-      },
-        error => {
-          this.submitted = false;
-          console.log('Sign up error');
-          this.notification = { msgType: 'error', msgBody: error['error'].message };
-        });
+    if(this.form.value.role === "ROLE_ADMIN"){
+      this.userService.addNewAdmin(this.form.value)
+        .subscribe(data => {
+          console.log(data);
+          //this.router.navigate([this.returnUrl]);
+          this.router.navigate(['user-table']);
+        
+        },
+          error => {
+            this.submitted = false;
+            this.notification = { msgType: 'error', msgBody: error['error'].message };
+            this.router.navigate(['user-table']);
+          });
+    }
+    else{
+      this.userService.addNewUser(this.form.value)
+        .subscribe(data => {
+          console.log(data);
+          this.router.navigate(['user-table']);
+        },
+          error => {
+            this.submitted = false;
+            this.notification = { msgType: 'error', msgBody: error['error'].message };
+          });
+    }
 
   }
-
 
 }

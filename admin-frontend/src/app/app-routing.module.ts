@@ -1,9 +1,12 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { AddUserComponent } from './add-user/add-user.component';
+import { DeviceTableComponent } from './device-table/device-table.component';
 
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
-import { SignUpComponent } from './sign-up/sign-up.component';
+import { UserTableComponent } from './user-table/user-table.component';
+
 
 // todo: dodati Auth Guards na putanje
 const routes: Routes = [
@@ -17,8 +20,16 @@ const routes: Routes = [
     component: LoginComponent,
   },
   {
-    path: 'signup',
-    component: SignUpComponent,
+    path: 'user-table',
+    component: UserTableComponent,
+  },
+  {
+    path: 'add-user',
+    component: AddUserComponent,
+  },
+  {
+    path: 'device-table',
+    component: DeviceTableComponent,
   },
 ];
 

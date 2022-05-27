@@ -10,7 +10,6 @@ import { HomeComponent } from './home/home.component';
 import { HeaderComponent } from './header/header.component';
 import { UserMenuComponent } from './user-menu/user-menu.component';
 import { LoginComponent } from './login/login.component';
-import { SignUpComponent } from './sign-up/sign-up.component';
 
 import {AngularMaterialModule} from './angular-material/angular-material.module';
 
@@ -24,6 +23,9 @@ import {ConfigService} from './service/config.service';
 
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TokenInterceptor } from './interceptor/TokenInterceptor';
+import { UserTableComponent } from './user-table/user-table.component';
+import { AddUserComponent } from './add-user/add-user.component';
+import { DeviceTableComponent } from './device-table/device-table.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +35,9 @@ import { TokenInterceptor } from './interceptor/TokenInterceptor';
     HeaderComponent,
     UserMenuComponent,
     LoginComponent,
-    SignUpComponent,
+    UserTableComponent,
+    AddUserComponent,
+    DeviceTableComponent,
   ],
   imports: [
     BrowserModule,

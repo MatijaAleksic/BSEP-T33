@@ -45,9 +45,6 @@ public class AuthenticationController {
     public ResponseEntity<UserTokenState> createAuthenticationToken(
             @RequestBody JwtAuthenticationRequest authenticationRequest, HttpServletResponse response) {
 
-        System.out.println(authenticationRequest.getUsername());
-        System.out.println(authenticationRequest.getPassword());
-
 
         // Ukoliko kredencijali nisu ispravni, logovanje nece biti uspesno, desice se
         // AuthenticationException
@@ -76,17 +73,17 @@ public class AuthenticationController {
     }
 
     // Endpoint za registraciju novog korisnika
-    @PostMapping("/signup")
-    public ResponseEntity<User> addUser(@RequestBody UserRequest userRequest, UriComponentsBuilder ucBuilder) {
-
-        User existUser = this.userService.findByUsername(userRequest.getUsername());
-
-        if (existUser != null) {
-            throw new ResourceConflictException(userRequest.getId(), "Username already exists");
-        }
-
-        User user = this.userService.save(userRequest);
-
-        return new ResponseEntity<>(user, HttpStatus.CREATED);
-    }
+//    @PostMapping("/signup")
+//    public ResponseEntity<User> addUser(@RequestBody UserRequest userRequest, UriComponentsBuilder ucBuilder) {
+//
+//        User existUser = this.userService.findByUsername(userRequest.getUsername());
+//
+//        if (existUser != null) {
+//            throw new ResourceConflictException(userRequest.getId(), "Username already exists");
+//        }
+//
+//        User user = this.userService.save(userRequest);
+//
+//        return new ResponseEntity<>(user, HttpStatus.CREATED);
+//    }
 }

@@ -18,6 +18,11 @@
     margin-left: auto;
     float: right;
   }
+
+  .left {
+    margin-right: auto;
+    float: left;
+  }
   
   .app-angular-logo {
     margin: 0 4px 3px 0;

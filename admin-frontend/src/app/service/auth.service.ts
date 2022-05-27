@@ -3,10 +3,8 @@ import { HttpHeaders } from '@angular/common/http';
 import { ApiService } from './api.service';
 import { UserService } from './user.service';
 import { ConfigService } from './config.service';
-import { catchError, map } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { Router } from '@angular/router';
-import { of } from 'rxjs/internal/observable/of';
-import { Observable } from 'rxjs';
 import { _throw } from 'rxjs/observable/throw';
 
 @Injectable()
@@ -16,11 +14,13 @@ export class AuthService {
     private apiService: ApiService,
     private userService: UserService,
     private config: ConfigService,
-    private router: Router
+    private router: Router,
   ) {
   }
 
+  private token = null;
   private access_token = null;
+  private date = null;
 
   login(user) {
     const loginHeaders = new HttpHeaders({
@@ -32,24 +32,17 @@ export class AuthService {
       'username': user.username,
       'password': user.password
     };
+
     return this.apiService.post(this.config.login_url, JSON.stringify(body), loginHeaders)
       .pipe(map((res) => {
         console.log('Login success');
+        this.token = res;
         this.access_token = res.accessToken;
-        sessionStorage.setItem("jwt", res.accessToken)
+        this.date = new Date();
+        sessionStorage.setItem("jwt", res.accessToken);
       }));
   }
 
-  signup(user) {
-    const signupHeaders = new HttpHeaders({
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
-    });
-    return this.apiService.post(this.config.signup_url, JSON.stringify(user), signupHeaders)
-      .pipe(map(() => {
-        console.log('Sign up success');
-      }));
-  }
 
   logout() {
     this.userService.currentUser = null;
@@ -63,6 +56,10 @@ export class AuthService {
 
   getToken() {
     return this.access_token;
+  }
+
+  getExpires(){
+    return this.token;
   }
 
 }

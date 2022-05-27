@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {FooService} from '../service/foo.service';
 import {UserService} from '../service/user.service';
 import {ConfigService} from '../service/config.service';
+import { AuthService } from '../service';
 
 @Component({
   selector: 'app-home',
@@ -17,12 +18,21 @@ export class HomeComponent implements OnInit {
   constructor(
     private config: ConfigService,
     private fooService: FooService,
-    private userService: UserService
+    private userService: UserService,
+    private authService: AuthService
   ) {
   }
 
-  ngOnInit() {
+  ngOnInit() {  
+    if(this.authService.tokenIsPresent() && this.userService.currentUser === null){
+      console.log(this.userService.currentUser);
+      this.userService.getMyInfo()
+      .subscribe(res => {
+      }, err => {
+      });
+}
   }
+
 
   makeRequest(path) {
     if (this.config.foo_url.endsWith(path)) {

@@ -4,10 +4,17 @@ import java.security.Principal;
 import java.sql.Timestamp;
 import java.util.*;
 
+import bsep.admin.Exceptions.ResourceConflictException;
+import bsep.admin.Exceptions.UserAlredyExistsException;
+import bsep.admin.Exceptions.UserNotFoundException;
+import bsep.admin.model.Role;
 import bsep.admin.model.User;
+import bsep.admin.service.RoleService;
 import bsep.admin.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -17,12 +24,15 @@ import javax.validation.Valid;
 
 // Primer kontrolera cijim metodama mogu pristupiti samo autorizovani korisnici
 @RestController
-@RequestMapping(value = "/api", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 @CrossOrigin
 public class UserController {
 
 	@Autowired
 	private UserService userService;
+
+	@Autowired
+	private RoleService roleService;
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;
@@ -48,22 +58,59 @@ public class UserController {
 		return this.userService.findByUsername(user.getName());
 	}
 
-//	@PostMapping
-//	@PreAuthorize("hasAuthority('CREATE_USER')")
-//	public User create(@RequestBody @Valid User entity) throws Exception {
-//
-//		entity.setPassword(passwordEncoder.encode(entity.getPassword()));
-//		entity.setEnabled(true);
-//		entity.setLastPasswordResetDate(new Timestamp(new Date().getTime()));
-//
-//		List<Authority> auth = new ArrayList<Authority>();
-//
-//		auth.add(authorityService.findByName("ROLE_ADMIN"));
-//
-//		entity.setAuthorities(auth);
-//
-//		return service.save(entity);
-//	}
+	@PostMapping("/admin")
+	@PreAuthorize("hasAuthority('CREATE_ADMIN')")
+	public ResponseEntity<?> createAdmin(@RequestBody @Valid User entity) throws Exception {
+
+		User existUser = this.userService.findByUsername(entity.getUsername());
+
+		if (existUser != null) {
+			throw new UserAlredyExistsException("Admin with given username already exists");
+		}
+
+		entity.setPassword(passwordEncoder.encode(entity.getPassword()));
+		entity.setEnabled(true);
+		entity.setLastPasswordResetDate(new Timestamp(new Date().getTime()));
+
+		entity.setRoles(roleService.findByName("ROLE_ADMIN"));
+
+		return new ResponseEntity<>(this.userService.save(entity), HttpStatus.CREATED);
+	}
+	@PostMapping("/user")
+	@PreAuthorize("hasAuthority('CREATE_USER')")
+	public ResponseEntity<?> createUser(@RequestBody @Valid User entity) throws Exception {
+
+		User existUser = this.userService.findByUsername(entity.getUsername());
+
+		if (existUser != null) {
+			throw new UserAlredyExistsException("User with given username already exists");
+		}
+
+		entity.setPassword(passwordEncoder.encode(entity.getPassword()));
+		entity.setEnabled(true);
+		entity.setLastPasswordResetDate(new Timestamp(new Date().getTime()));
+
+		entity.setRoles(roleService.findByName("ROLE_USER"));
+
+		return new ResponseEntity<>(this.userService.save(entity), HttpStatus.CREATED);
+	}
+
+
+	@PostMapping("/user/delete")
+	@PreAuthorize("hasAuthority('DELETE_USER')")
+	public ResponseEntity<?> deleteUser(@RequestBody @Valid User entity) throws Exception {
+
+		User existUser = this.userService.findByUsername(entity.getUsername());
+
+		if (existUser == null) {
+			throw new UserNotFoundException("User with given username doesnt exist");
+		}
+
+		this.userService.delete(existUser);
+
+		return new ResponseEntity<>("User succesfully deleted!", HttpStatus.OK);
+	}
+
 
 	@GetMapping("/foo")
     public Map<String, String> getFoo() {

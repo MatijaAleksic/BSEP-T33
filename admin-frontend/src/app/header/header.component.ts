@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {UserService} from '../service/user.service';
+import {AuthService} from '../service/auth.service';
 
 @Component({
   selector: 'app-header',
@@ -8,13 +9,30 @@ import {UserService} from '../service/user.service';
 })
 export class HeaderComponent implements OnInit {
 
-  constructor( private userService: UserService) { }
+  constructor( 
+    private authService: AuthService,
+    private userService: UserService
+    ) { }
 
   ngOnInit() {
   }
 
   hasSignedIn() {
     return !!this.userService.currentUser;
+  }
+
+  logout() {
+    this.authService.logout();
+  }
+
+  isUserAdmin(){
+    if(this.userService.currentUser != null){
+      for (let entry of this.userService.currentUser.roles) {
+        if(entry.name === "ROLE_ADMIN"){
+          return true;
+        }
+      }
+    }
   }
 
   userName() {

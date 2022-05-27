@@ -1,0 +1,54 @@
+<div class="demo-button-container">
+      <div id="container-div" >
+          <div id="form-holder-div">
+            <h3 id="user-h3" style="position:center">User Table</h3>
+            <table mat-table [dataSource]="users" class="user-table">
+  
+              <ng-container matColumnDef="id">
+                <th mat-header-cell *matHeaderCellDef>ID</th>
+                <td mat-cell *matCellDef="let element">{{element.id}}</td>
+              </ng-container>
+  
+              <ng-container matColumnDef="firstName">
+                  <th style="padding : 20px" mat-header-cell *matHeaderCellDef>First Name</th>
+                  <td mat-cell *matCellDef="let element">{{element.firstName}}</td>
+              </ng-container>
+  
+              <ng-container matColumnDef="lastName">
+                <th mat-header-cell *matHeaderCellDef>Last Name</th>
+                <td mat-cell *matCellDef="let element">{{element.lastName}}</td>
+              </ng-container>
+  
+              <ng-container matColumnDef="username">
+                <th mat-header-cell *matHeaderCellDef>Username</th>
+                <td mat-cell *matCellDef="let element">{{element.username}}</td>
+              </ng-container>
+  
+              <ng-container matColumnDef="email">
+                <th mat-header-cell *matHeaderCellDef>Email</th>
+                <td mat-cell *matCellDef="let element">{{element.email}}</td>
+              </ng-container>
+  
+              <ng-container matColumnDef="delete">
+                <th mat-header-cell *matHeaderCellDef></th>
+                <td mat-cell *matCellDef="let element">
+                  <button mat-raised-button color="primary" (click)="deleteAdmin(element)" id="delete-button">Delete</button>
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="manage-devices">
+                <th mat-header-cell *matHeaderCellDef></th>
+                <td mat-cell *matCellDef="let element">
+                  <button mat-raised-button color="primary" (click)="manageDevices(element)" id="manage-devices-button">Manage Devices</button>
+                </td>
+              </ng-container>
+  
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  
+            </table>
+            <button mat-raised-button color="accent" routerLink="/add-user"  id="add-new-user-button">New User</button>
+      </div>
+</div>
+  
+  
