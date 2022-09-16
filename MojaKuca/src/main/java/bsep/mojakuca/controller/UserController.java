@@ -1,0 +1,123 @@
+package bsep.mojakuca.controller;
+
+import bsep.mojakuca.exception.UserAlredyExistsException;
+import bsep.mojakuca.exception.UserNotFoundException;
+import bsep.mojakuca.model.User;
+import bsep.mojakuca.service.RoleService;
+import bsep.mojakuca.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import java.security.Principal;
+import java.sql.Timestamp;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+
+// Primer kontrolera cijim metodama mogu pristupiti samo autorizovani korisnici
+@RestController
+@RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+//@CrossOrigin
+public class UserController {
+
+	@Autowired
+	private UserService userService;
+
+	@Autowired
+	private RoleService roleService;
+
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+
+	// Za pristup ovoj metodi neophodno je da ulogovani korisnik ima READ_USER permisiju
+	// Ukoliko nema, server ce vratiti gresku 403 Forbidden
+	// Korisnik jeste autentifikovan, ali nije autorizovan da pristupi resursu
+	@GetMapping("/user/{userId}")
+	@PreAuthorize("hasAuthority('READ_USER')")
+	public User loadById(@PathVariable Long userId) {
+		return this.userService.findById(userId);
+	}
+
+	@GetMapping("/user/all")
+	@PreAuthorize("hasAuthority('READ_USERS')")
+	public List<User> loadAll() {
+		return this.userService.findAll();
+	}
+
+	@GetMapping("/whoami")
+	@PreAuthorize("hasAuthority('FIND_USER')")
+	public User user(Principal user) {
+		System.out.println(user.toString());
+		System.out.println(user.getName());
+		return this.userService.findByUsername(user.getName());
+	}
+
+	@PostMapping("/admin")
+	@PreAuthorize("hasAuthority('CREATE_ADMIN')")
+	public ResponseEntity<?> createAdmin(@RequestBody @Valid User entity) throws Exception {
+
+		User existUser = this.userService.findByUsername(entity.getUsername());
+
+		if (existUser != null) {
+			throw new UserAlredyExistsException("Admin with given username already exists");
+		}
+
+		entity.setPassword(passwordEncoder.encode(entity.getPassword()));
+		entity.setEnabled(true);
+		entity.setLastPasswordResetDate(new Timestamp(new Date().getTime()));
+
+		entity.setRoles(roleService.findByName("ROLE_ADMIN"));
+
+		return new ResponseEntity<>(this.userService.save(entity), HttpStatus.CREATED);
+	}
+	@PostMapping("/user")
+	@PreAuthorize("hasAuthority('CREATE_USER')")
+	public ResponseEntity<?> createUser(@RequestBody @Valid User entity) throws Exception {
+
+		User existUser = this.userService.findByUsername(entity.getUsername());
+
+		if (existUser != null) {
+			throw new UserAlredyExistsException("User with given username already exists");
+		}
+
+		entity.setPassword(passwordEncoder.encode(entity.getPassword()));
+		entity.setEnabled(true);
+		entity.setLastPasswordResetDate(new Timestamp(new Date().getTime()));
+
+		entity.setRoles(roleService.findByName("ROLE_USER"));
+
+		return new ResponseEntity<>(this.userService.save(entity), HttpStatus.CREATED);
+	}
+
+
+	@PostMapping("/user/delete")
+	@PreAuthorize("hasAuthority('DELETE_USER')")
+	public ResponseEntity<?> deleteUser(@RequestBody @Valid User entity) throws Exception {
+
+		User existUser = this.userService.findByUsername(entity.getUsername());
+
+		if (existUser == null) {
+			throw new UserNotFoundException("User with given username doesnt exist");
+		}
+
+		this.userService.delete(existUser);
+
+		return new ResponseEntity<>("User succesfully deleted!", HttpStatus.OK);
+	}
+
+
+	@GetMapping("/foo")
+    public Map<String, String> getFoo() {
+        Map<String, String> fooObj = new HashMap<>();
+        fooObj.put("foo", "bar");
+        return fooObj;
+    }
+}

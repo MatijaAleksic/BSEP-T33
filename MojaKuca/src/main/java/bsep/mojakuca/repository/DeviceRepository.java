@@ -1,6 +1,6 @@
-package bsep.admin.repository;
+package bsep.mojakuca.repository;
 
-import bsep.admin.model.Device;
+import bsep.mojakuca.model.Device;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
