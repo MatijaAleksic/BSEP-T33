@@ -25,9 +25,10 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {  
     if(this.authService.tokenIsPresent() && this.userService.currentUser === null){
-      console.log(this.userService.currentUser);
+      
       this.userService.getMyInfo()
       .subscribe(res => {
+        
       }, err => {
       });
 }

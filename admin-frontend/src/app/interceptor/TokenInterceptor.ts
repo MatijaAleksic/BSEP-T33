@@ -20,17 +20,19 @@ export class TokenInterceptor implements HttpInterceptor {
     ) { }
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     if (this.auth.tokenIsPresent()) {
-      console.log(this.auth.getExpires().expiresIn)
-      console.log(new Date().setMinutes(new Date().getMinutes() + 120))
+      // console.log(this.auth.getExpires().expiresIn)
+      // console.log(new Date().setMinutes(new Date().getMinutes() + 120))
 
       // if (new Date().getSeconds()this.auth.getExpires().expiresIn < Date.now() / 1000) {
       //   next(action);
       //   localStorage.clear();
       // }
 
+      
+
       request = request.clone({
         setHeaders: {
-          Authorization: `Bearer ${this.auth.getToken()}` 
+          Authorization: `Bearer ${this.auth.getToken()}`
         },
         withCredentials: true
       });

@@ -1,10 +1,4 @@
-/* #add-user-form{
-    display: block;
-    border : 1000px;
-} */
-
-
-#user-form{
+#revokeCertificateForm{
     display:flex;
     flex-direction: column;
 }

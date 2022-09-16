@@ -1,0 +1,30 @@
+<mat-card  elevation="5" fxFlex class="content">
+
+    <mat-card-title>
+        <h2>Revoke Certificate</h2>
+    </mat-card-title>
+
+    <mat-card-content >
+        <form id="revokeCertificateForm" (ngSubmit)="onSubmit()" *ngIf="!submitted" [formGroup]="form">
+
+            <mat-form-field>
+                <label>Select reason for revocation</label>
+                <mat-select formControlName="revocationReason">
+                    <mat-option *ngFor="let reason of reasons" [value]="reason">
+                        {{reason}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <br>
+            <button style="margin-right : 10px" [disabled]="!form.valid" color="primary" mat-raised-button type="submit">Revoke</button>
+            <button color="primary" mat-raised-button (click) = "this.router.navigate(['/certificate-table'])" >Go Back</button>
+        </form>
+        
+        <p *ngIf="notification" [class]="notification.msgType">{{notification.msgBody}}</p>
+        <br>
+        <mat-spinner *ngIf="submitted" mode="indeterminate"></mat-spinner>
+        <br>
+    </mat-card-content>
+    
+</mat-card>

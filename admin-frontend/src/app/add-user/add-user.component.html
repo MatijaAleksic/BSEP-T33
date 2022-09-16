@@ -1,11 +1,11 @@
-<mat-card elevation="5" fxFlex class="content">
+<mat-card  elevation="5" fxFlex class="content">
 
     <mat-card-title>
         <h2>Add New User</h2>
     </mat-card-title>
 
-    <mat-card-content>
-        <form (ngSubmit)="onSubmit()" *ngIf="!submitted" [formGroup]="form">
+    <mat-card-content >
+        <form id="userForm" (ngSubmit)="onSubmit()" *ngIf="!submitted" [formGroup]="form">
             <mat-form-field>
                 <label>Username: </label>
                 <input formControlName="username" matInput required>

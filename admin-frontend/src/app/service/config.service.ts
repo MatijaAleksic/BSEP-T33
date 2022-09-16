@@ -5,7 +5,7 @@ import {Injectable} from '@angular/core';
 })
 export class ConfigService {
 
-  private _api_url = 'http://localhost:8080';
+  private _api_url = 'https://localhost:8080';
   private _auth_url = this._api_url + '/auth';
 
   private _user_url = this._api_url + '/user';
@@ -23,6 +23,9 @@ export class ConfigService {
   private _device_activate_url = this._device_url + "/activate";
   private _device_deactivate_url = this._device_url + "/deactivate";
   private _device_user_url = this._device_url + "/user";
+
+  private _certificate_url = this._api_url + "/certificate";
+  private _certificate_request_url = this._api_url + "/certificate_request";
 
 
 
@@ -61,6 +64,12 @@ export class ConfigService {
   }
   get device_deactivate_url(): string{
     return this._device_deactivate_url;
+  }
+  get certificate_url(): string{
+    return this._certificate_url;
+  }
+  get certificate_request_url(): string{
+    return this._certificate_request_url;
   }
 
 }

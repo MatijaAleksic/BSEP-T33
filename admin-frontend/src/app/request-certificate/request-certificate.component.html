@@ -1,0 +1,53 @@
+<mat-card  elevation="5" fxFlex class="content">
+
+    <mat-card-title>
+        <h2>Request Certificate</h2>
+    </mat-card-title>
+
+    <mat-card-content >
+        <form id="certificateRequestForm" (ngSubmit)="onSubmit()" *ngIf="!submitted" [formGroup]="form">
+            <mat-form-field>
+                <label>Common Name: </label>
+                <input formControlName="commonName" matInput required>
+            </mat-form-field>
+            <mat-form-field>
+                <label>Surname: </label>
+                <input formControlName="surname" matInput required>
+            </mat-form-field>
+            <mat-form-field>
+                <label>Given Name: </label>
+                <input formControlName="givenName" matInput>
+            </mat-form-field>
+            <mat-form-field>
+                <label>Organization: </label>
+                <input formControlName="organization" matInput>
+            </mat-form-field>
+            <mat-form-field>
+                <label>Organization Unit: </label>
+                <input formControlName="organizationUnit" matInput>
+            </mat-form-field>
+            <mat-form-field>
+                <label>Country: </label>
+                <input formControlName="country" matInput>
+            </mat-form-field>
+            <mat-form-field>
+                <label>Email: </label>
+                <input formControlName="email" matInput>
+            </mat-form-field>
+            <mat-form-field>
+                <label>UID: </label>
+                <input formControlName="uid" matInput>
+            </mat-form-field>
+
+            <br>
+            <button style="margin-right : 10px" [disabled]="!form.valid" color="primary" mat-raised-button type="submit">Create</button>
+            <button color="primary" mat-raised-button (click) = "this.router.navigate(['/'])" >Go Back</button>
+        </form>
+        
+        <p *ngIf="notification" [class]="notification.msgType">{{notification.msgBody}}</p>
+        <br>
+        <mat-spinner *ngIf="submitted" mode="indeterminate"></mat-spinner>
+        <br>
+    </mat-card-content>
+    
+</mat-card>

@@ -26,6 +26,10 @@ import { TokenInterceptor } from './interceptor/TokenInterceptor';
 import { UserTableComponent } from './user-table/user-table.component';
 import { AddUserComponent } from './add-user/add-user.component';
 import { DeviceTableComponent } from './device-table/device-table.component';
+import { CertificateTableComponent } from './certificate-table/certificate-table.component';
+import { CertificateRequestTableComponent } from './certificate-request-table/certificate-request-table.component';
+import { RequestCertificateComponent } from './request-certificate/request-certificate.component';
+import { RevokeCertificateComponent } from './revoke-certificate/revoke-certificate.component';
 
 @NgModule({
   declarations: [
@@ -38,6 +42,10 @@ import { DeviceTableComponent } from './device-table/device-table.component';
     UserTableComponent,
     AddUserComponent,
     DeviceTableComponent,
+    CertificateTableComponent,
+    CertificateRequestTableComponent,
+    RequestCertificateComponent,
+    RevokeCertificateComponent,
   ],
   imports: [
     BrowserModule,

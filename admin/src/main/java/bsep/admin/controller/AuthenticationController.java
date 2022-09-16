@@ -63,10 +63,11 @@ public class AuthenticationController {
 
         // Kreiraj cookie
         // String cookie = "__Secure-Fgp=" + fingerprint + "; SameSite=Strict; HttpOnly; Path=/; Secure";  // kasnije mozete probati da postavite i ostale atribute, ali tek nakon sto podesite https
-        String cookie = "Fingerprint=" + fingerprint + "; HttpOnly; Path=/";
+        String cookie = "Fingerprint=" + fingerprint + "; HttpOnly; Path=/; SameSite=None; Secure"; //+ "; Path=http://localhost:4200/; SameSite=Strict;"; //+ "; HttpOnly; Path=/";
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("Set-Cookie", cookie);
+        //headers.add("Access-Control-Expose-Headers", "Set-Cookie");
 
         // Vrati token kao odgovor na uspesnu autentifikaciju
         return ResponseEntity.ok().headers(headers).body(new UserTokenState(jwt, expiresIn));

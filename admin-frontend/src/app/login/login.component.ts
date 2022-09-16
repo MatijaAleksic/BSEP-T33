@@ -46,13 +46,13 @@ export class LoginComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.route.params
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((params: DisplayMessage) => {
-        this.notification = params;
-      });
-    // get return url from route parameters or default to '/'
-    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+    // this.route.params
+    //   .pipe(takeUntil(this.ngUnsubscribe))
+    //   .subscribe((params: DisplayMessage) => {
+    //     this.notification = params;
+    //   });
+    // // get return url from route parameters or default to '/'
+    // this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
     this.form = this.formBuilder.group({
       username: ['', Validators.compose([Validators.required, Validators.minLength(4), Validators.maxLength(20)])],
       password: ['', Validators.compose([Validators.required, Validators.minLength(4), Validators.maxLength(20)])]
@@ -60,8 +60,8 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnDestroy() {
-    this.ngUnsubscribe.next();
-    this.ngUnsubscribe.complete();
+    // this.ngUnsubscribe.next();
+    // this.ngUnsubscribe.complete();
   }
 
   onSubmit() {
@@ -73,7 +73,7 @@ export class LoginComponent implements OnInit {
 
     this.authService.login(this.form.value)
       .subscribe(data => {
-          this.router.navigate([this.returnUrl]);
+          this.router.navigate(['/']);
         },
         error => {
           this.submitted = false;

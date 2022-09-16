@@ -52,11 +52,11 @@ export class ApiService {
 
   private request(path: string, body: any, method = RequestMethod.Post, custemHeaders?: HttpHeaders): Observable<any> {
     const req = new HttpRequest(method, path, body, {
-      headers: custemHeaders || this.headers,
+      headers: custemHeaders || this.headers, 
     });
 
     return this.http.request(req).pipe(filter(response => response instanceof HttpResponse))
-      .pipe(map((response: HttpResponse<any>) => response.body))
+      .pipe(map((response: HttpResponse<any>) => response))
       .pipe(catchError(error => this.checkError(error)));
   }
 

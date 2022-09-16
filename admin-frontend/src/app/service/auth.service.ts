@@ -34,12 +34,17 @@ export class AuthService {
     };
 
     return this.apiService.post(this.config.login_url, JSON.stringify(body), loginHeaders)
-      .pipe(map((res) => {
+      .pipe(map((response) => {
         console.log('Login success');
-        this.token = res;
-        this.access_token = res.accessToken;
+
+            // "ssl" : true,
+            // "sslKey" : "src/assets/admin.key",
+            // "sslCert" : "src/assets/admin@gmail.com.der",
+
+        this.token = response.body;
+        this.access_token = response.body.accessToken;
         this.date = new Date();
-        sessionStorage.setItem("jwt", res.accessToken);
+        sessionStorage.setItem("jwt", response.body.accessToken);
       }));
   }
 
@@ -61,5 +66,6 @@ export class AuthService {
   getExpires(){
     return this.token;
   }
+
 
 }

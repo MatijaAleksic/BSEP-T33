@@ -25,7 +25,7 @@ import javax.validation.Valid;
 // Primer kontrolera cijim metodama mogu pristupiti samo autorizovani korisnici
 @RestController
 @RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-@CrossOrigin
+//@CrossOrigin
 public class UserController {
 
 	@Autowired
@@ -55,6 +55,8 @@ public class UserController {
 	@GetMapping("/whoami")
 	@PreAuthorize("hasAuthority('FIND_USER')")
 	public User user(Principal user) {
+		System.out.println(user.toString());
+		System.out.println(user.getName());
 		return this.userService.findByUsername(user.getName());
 	}
 

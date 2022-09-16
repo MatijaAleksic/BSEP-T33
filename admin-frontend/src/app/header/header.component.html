@@ -10,6 +10,18 @@
                 <span>User Table</span>
             </button>
 
+            <button *ngIf="hasSignedIn() && isUserAdmin()" mat-button routerLink="/certificate-table">
+                <span>Certificate Table</span>
+            </button>
+
+            <button *ngIf="hasSignedIn() && isUserAdmin()" mat-button routerLink="/certificate-request-table">
+                <span>Certificate Request Table</span>
+            </button>
+
+            <button *ngIf="hasSignedIn() && !isUserAdmin()" mat-button routerLink="/request-certificate">
+                <span>Request Certificate</span>
+            </button>
+
         </div>
     </div>
 
