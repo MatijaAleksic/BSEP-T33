@@ -2,11 +2,14 @@ package bsep.mojakuca.controller;
 
 import bsep.mojakuca.dto.AddUserDeviceDTO;
 import bsep.mojakuca.dto.DeviceDTO;
+import bsep.mojakuca.dto.DeviceMessageDTO;
 import bsep.mojakuca.exception.UserNotFoundException;
 import bsep.mojakuca.model.Device;
 import bsep.mojakuca.model.User;
 import bsep.mojakuca.service.DeviceService;
 import bsep.mojakuca.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -27,6 +30,9 @@ public class DeviceController {
 
     @Autowired
     private final UserService userService;
+
+    private static final Logger LOG = LoggerFactory.getLogger(DeviceController.class);
+
 
     public DeviceController(DeviceService deviceService, UserService userService) {
         this.deviceService = deviceService;
@@ -67,6 +73,10 @@ public class DeviceController {
 //
 //    }
 
+    @PostMapping("/message")
+    public void getMessage(@RequestBody DeviceMessageDTO dto)  {
+        LOG.info("Device id:" + dto.getId().toString() + ", message: " + dto.getMessage());
+    }
     @PostMapping("/activate")
     @PreAuthorize("hasAuthority('READ_USER_DEVICES')")
     public ResponseEntity<?> addDeviceForUser(@RequestBody AddUserDeviceDTO dto) throws UserNotFoundException {
