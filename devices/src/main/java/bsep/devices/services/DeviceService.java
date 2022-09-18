@@ -64,13 +64,13 @@ public class DeviceService {
                     }
                     else {
                         device.setMessage("ALARM!!! SOMETHING BAD HAPPENED!");
+                        LOG.info("ALARM HAPPENED with device name: " + device.getName());
                     }
 
                     HttpEntity<DeviceMessageDTO> httpEntity = new HttpEntity<>(device, headers);
                     restTemplate.postForObject(uri, httpEntity, DeviceMessageDTO.class);
-
+                    LOG.info("Device with name:" + device.getName() + "sent a message:" + device.getMessage());
                 }
-                LOG.info("LOOP RADI!");
             }
         },begin, timeinterval);
     }

@@ -10,6 +10,8 @@ import bsep.admin.model.Role;
 import bsep.admin.model.User;
 import bsep.admin.service.UserService;
 import bsep.admin.util.TokenUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -30,6 +32,8 @@ import org.springframework.web.util.UriComponentsBuilder;
 @RestController
 @RequestMapping(value = "/auth", produces = MediaType.APPLICATION_JSON_VALUE)
 public class AuthenticationController {
+
+    private static final Logger LOG = LoggerFactory.getLogger(AuthenticationController.class);
 
     @Autowired
     private TokenUtils tokenUtils;
@@ -71,7 +75,11 @@ public class AuthenticationController {
         //headers.add("Access-Control-Expose-Headers", "Set-Cookie");
 
         // Vrati token kao odgovor na uspesnu autentifikaciju
+        LOG.info("User Logged in!");
+
+
         return ResponseEntity.ok().headers(headers).body(new UserTokenState(jwt, expiresIn, user.getRoles()));
+
     }
 
     // Endpoint za registraciju novog korisnika

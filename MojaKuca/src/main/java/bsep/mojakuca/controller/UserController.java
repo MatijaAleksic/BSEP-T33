@@ -9,6 +9,8 @@ import bsep.mojakuca.exception.UserNotFoundException;
 import bsep.mojakuca.model.User;
 import bsep.mojakuca.service.RoleService;
 import bsep.mojakuca.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -35,26 +37,31 @@ public class UserController {
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
+	private static final Logger LOG = LoggerFactory.getLogger(UserController.class);
+
+
+
 	// Za pristup ovoj metodi neophodno je da ulogovani korisnik ima READ_USER permisiju
 	// Ukoliko nema, server ce vratiti gresku 403 Forbidden
 	// Korisnik jeste autentifikovan, ali nije autorizovan da pristupi resursu
 	@GetMapping("/user/{userId}")
 	@PreAuthorize("hasAuthority('READ_USER')")
 	public User loadById(@PathVariable Long userId) {
+		LOG.info("Get user by id");
 		return this.userService.findById(userId);
 	}
 
 	@GetMapping("/user/all")
 	@PreAuthorize("hasAuthority('READ_USERS')")
 	public List<User> loadAll() {
+		LOG.info("Get all users");
 		return this.userService.findAll();
 	}
 
 	@GetMapping("/whoami")
 	@PreAuthorize("hasAuthority('FIND_USER')")
 	public User user(Principal user) {
-		System.out.println(user.toString());
-		System.out.println(user.getName());
+		LOG.info("Get user info");
 		return this.userService.findByUsername(user.getName());
 	}
 
@@ -74,6 +81,7 @@ public class UserController {
 
 		entity.setRoles(roleService.findByName("ROLE_ADMIN"));
 
+		LOG.info("Create new admin");
 		return new ResponseEntity<>(this.userService.save(entity), HttpStatus.CREATED);
 	}
 	@PostMapping("/user")
@@ -92,6 +100,7 @@ public class UserController {
 
 		entity.setRoles(roleService.findByName("ROLE_USER"));
 
+		LOG.info("Create new user");
 		return new ResponseEntity<>(this.userService.save(entity), HttpStatus.CREATED);
 	}
 
@@ -108,6 +117,7 @@ public class UserController {
 
 		this.userService.delete(existUser);
 
+		LOG.info("Delete user");
 		return new ResponseEntity<>("User succesfully deleted!", HttpStatus.OK);
 	}
 }

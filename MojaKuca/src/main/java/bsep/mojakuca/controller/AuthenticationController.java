@@ -5,6 +5,8 @@ import bsep.mojakuca.model.User;
 import bsep.mojakuca.model.UserTokenState;
 import bsep.mojakuca.service.UserService;
 import bsep.mojakuca.util.TokenUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -34,6 +36,9 @@ public class AuthenticationController {
 
     @Autowired
     private UserService userService;
+
+    private static final Logger LOG = LoggerFactory.getLogger(AuthenticationController.class);
+
 
     // Prvi endpoint koji pogadja korisnik kada se loguje.
     // Tada zna samo svoje korisnicko ime i lozinku i to prosledjuje na backend.
@@ -65,6 +70,7 @@ public class AuthenticationController {
         headers.add("Set-Cookie", cookie);
         //headers.add("Access-Control-Expose-Headers", "Set-Cookie");
 
+        LOG.info("User logged in");
         // Vrati token kao odgovor na uspesnu autentifikaciju
         return ResponseEntity.ok().headers(headers).body(new UserTokenState(jwt, expiresIn, user.getRoles()));
     }

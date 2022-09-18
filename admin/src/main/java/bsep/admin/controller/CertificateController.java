@@ -15,6 +15,8 @@ import org.bouncycastle.asn1.x500.style.BCStyle;
 import org.bouncycastle.asn1.x500.style.IETFUtils;
 import org.bouncycastle.cert.jcajce.JcaX509CertificateHolder;
 import org.bouncycastle.operator.OperatorCreationException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -43,6 +45,8 @@ public class CertificateController {
 
     @Autowired
     CertificateRequestService cerRequestInfoService;
+
+    private static final Logger LOG = LoggerFactory.getLogger(CertificateController.class);
 
     @GetMapping
     @PreAuthorize("hasAuthority('READ_CERTIFICATES')")
@@ -81,6 +85,9 @@ public class CertificateController {
             certInfos.add(newEntry);
         }
 
+        LOG.info("Get all certificates");
+
+
         return new ResponseEntity<>(certInfos, HttpStatus.OK);
     }
 
@@ -92,11 +99,14 @@ public class CertificateController {
 
             //certificateService.createCertificate(certificateDTO);
             cerRequestInfoService.delete(certificateDTO.getId());
+            LOG.info("Create Certificates");
             return new ResponseEntity<>("Success", HttpStatus.CREATED);
 
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
+
+
     }
 
     @RequestMapping(method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -104,6 +114,8 @@ public class CertificateController {
     public ResponseEntity<?> revoke(@RequestBody RevokeCertificateDTO revokeCertificateDTO) {
         try {
             certificateService.revokeCertificate(revokeCertificateDTO);
+            LOG.info("Revoke Certificates");
+
         } catch (IOException | CRLException | CertificateException | OperatorCreationException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }

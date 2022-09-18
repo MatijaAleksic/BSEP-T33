@@ -2,6 +2,8 @@ package bsep.admin.controller;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -27,6 +29,9 @@ public class CertificateRequestController {
 
 	CertificateRequestMapper certificateRequestMapper;
 
+	private static final Logger LOG = LoggerFactory.getLogger(CertificateRequestController.class);
+
+
 	public CertificateRequestController() {
 		certificateRequestMapper = new CertificateRequestMapper();
 	}
@@ -35,6 +40,8 @@ public class CertificateRequestController {
 	@PreAuthorize("hasAuthority('READ_CERTIFICATE_REQUESTS')")
 	public ResponseEntity<?> findAll(Model model) {
 		List<CertificateRequestDTO> reqs = certificateRequestMapper.toDtoList(certificateRequestService.findAll());
+		LOG.info("Read Certificate Requests");
+
 		return new ResponseEntity<>(reqs, HttpStatus.OK);
 	}
 
@@ -42,6 +49,8 @@ public class CertificateRequestController {
 	@PreAuthorize("hasAuthority('CREATE_CERTIFICATE_REQUESTS')")
 	public ResponseEntity<?> create(@RequestBody CertificateRequestDTO certificateRequestDTO) {
 		certificateRequestService.save(certificateRequestDTO);
+		LOG.info("Create Certificate Requests");
+
 		return new ResponseEntity<>(HttpStatus.CREATED);
 	}
 
@@ -56,8 +65,11 @@ public class CertificateRequestController {
 		}
 
 		try {
+			LOG.info("Delete Certificate Requests");
+
 			return new ResponseEntity<>(certificateRequestService.deleteByUid(realId), HttpStatus.OK);
 //				return new ResponseEntity<>(certificateRequestService.delete(realId), HttpStatus.OK);
+
 		} catch (Exception e) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}

@@ -8,6 +8,8 @@ import bsep.admin.model.User;
 import bsep.admin.service.DeviceService;
 import bsep.admin.service.HomeService;
 import bsep.admin.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -32,6 +34,9 @@ public class HomeController {
     @Autowired
     private final DeviceService deviceService;
 
+    private static final Logger LOG = LoggerFactory.getLogger(HomeController.class);
+
+
 
     public HomeController(HomeService homeService, UserService userService, DeviceService deviceService) {
         this.homeService = homeService;
@@ -49,6 +54,8 @@ public class HomeController {
         for(Home home : user_homes){
             returnHomes.add(new HomeDTO(home.getId(), home.getName()));
         }
+
+        LOG.info("Find all homes for user");
         return new ResponseEntity<>(returnHomes, HttpStatus.OK);
     }
 
@@ -64,6 +71,8 @@ public class HomeController {
         for(Home home : homes){
             homeDTOS.add(new HomeDTO(home.getId(), home.getName()));
         }
+        LOG.info("Find all homes");
+
         return new ResponseEntity<>(homeDTOS, HttpStatus.OK);
 
     }
@@ -98,6 +107,7 @@ public class HomeController {
         ret.setUsers(existingHome.getUsers());
         ret.setDevices(returnDevices);
 
+        LOG.info("Get home with id");
         return new ResponseEntity<>(ret, HttpStatus.OK);
     }
 
@@ -113,6 +123,7 @@ public class HomeController {
 
         Set<Device> userDevices = existingHome.getDevices();
 
+        LOG.info("Get devices for home id");
         return new ResponseEntity<>(userDevices, HttpStatus.OK);
     }
 
@@ -128,6 +139,8 @@ public class HomeController {
         newHome.setName(homeDTO.getName());
 
         this.homeService.save(newHome);
+
+        LOG.info("Create home");
         return new ResponseEntity<>("Home successfully created!", HttpStatus.CREATED);
     }
 
@@ -148,6 +161,7 @@ public class HomeController {
         existingHome.getUsers().add(existUser);
         this.homeService.save(existingHome);
 
+        LOG.info("Add home attendant");
         return new ResponseEntity<>("User succesfully added to Home!", HttpStatus.OK);
     }
 
@@ -172,6 +186,7 @@ public class HomeController {
         homeUsers.remove(existUser);
         this.homeService.save(existingHome);
 
+        LOG.info("Remove home attendant");
         return new ResponseEntity<>("User succesfully removed from Home!", HttpStatus.OK);
     }
 
@@ -191,6 +206,7 @@ public class HomeController {
         existingHome.getDevices().add(existDevice);
         this.homeService.save(existingHome);
 
+        LOG.info("Add device to home");
         return new ResponseEntity<>("Device succesfully added to Home!", HttpStatus.OK);
     }
 
@@ -215,6 +231,7 @@ public class HomeController {
         homeUsers.remove(existDevice);
         this.homeService.save(existingHome);
 
+        LOG.info("Remove device to home");
         return new ResponseEntity<>("Device succesfully removed from Home!", HttpStatus.OK);
     }
 
@@ -234,6 +251,7 @@ public class HomeController {
             }
         }
 
+        LOG.info("Read all home unattendants");
         return new ResponseEntity<>(retUsers, HttpStatus.OK);
     }
 
@@ -248,6 +266,8 @@ public class HomeController {
             }
         }
         this.homeService.save(newHome);
+
+        LOG.info("Create new home");
         return new ResponseEntity<>("Succefully created new home", HttpStatus.CREATED);
     }
 }
