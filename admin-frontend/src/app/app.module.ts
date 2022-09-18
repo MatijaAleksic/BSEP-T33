@@ -33,6 +33,7 @@ import { AdminHomesTableComponent } from './tables/admin-homes-table/admin-homes
 import { ConfigureHomeTablesComponent } from './tables/configure-home-tables/configure-home-tables.component';
 import { AttendantTableComponent } from './tables/attendant-table/attendant-table.component';
 import { NewHomeComponent } from './forms/new-home/new-home.component';
+import { DeviceMessagesComponent } from './tables/device-messages/device-messages.component';
 
 
 @NgModule({
@@ -53,6 +54,7 @@ import { NewHomeComponent } from './forms/new-home/new-home.component';
     ConfigureHomeTablesComponent,
     AttendantTableComponent,
     NewHomeComponent,
+    DeviceMessagesComponent
   ],
   imports: [
     BrowserModule,

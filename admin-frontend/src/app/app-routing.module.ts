@@ -11,6 +11,7 @@ import { AttendantTableComponent } from './tables/attendant-table/attendant-tabl
 import { CertificateRequestTableComponent } from './tables/certificate-request-table/certificate-request-table.component';
 import { CertificateTableComponent } from './tables/certificate-table/certificate-table.component';
 import { ConfigureHomeTablesComponent } from './tables/configure-home-tables/configure-home-tables.component';
+import { DeviceMessagesComponent } from './tables/device-messages/device-messages.component';
 // import { DeviceTableComponent } from './tables/device-table/device-table.component';
 import { UserTableComponent } from './tables/user-table/user-table.component';
 
@@ -70,6 +71,10 @@ const routes: Routes = [
   {
     path: 'new-home',
     component: NewHomeComponent,
+  },
+  {
+    path: 'device-messages',
+    component: DeviceMessagesComponent,
   },
 ];
 

@@ -20,6 +20,8 @@ export class ConfigService {
   private _device_deactivate_url = this._device_url + "/deactivate";
   private _device_user_url = this._device_url + "/user";
 
+  private _home_url = this._api_url + "/home"
+  private _device_message_url = this._api_url + "/device_messsage"
 
 
   get login_url(): string {
@@ -46,4 +48,11 @@ export class ConfigService {
   get device_deactivate_url(): string{
     return this._device_deactivate_url;
   }
+  get home_url(): string{
+    return this._home_url;
+  }
+  get device_message_url(): string{
+    return this._device_message_url;
+  }
+  
 }

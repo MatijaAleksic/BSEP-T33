@@ -6,8 +6,8 @@
                 <span>Home</span>
             </button>
 
-            <button *ngIf="hasSignedIn() && isUserAdmin()" mat-button routerLink="/user-table">
-                <span>User Table</span>
+            <button *ngIf="hasSignedIn()" mat-button routerLink="/my-homes-table">
+                <span>My Homes</span>
             </button>
 
         </div>

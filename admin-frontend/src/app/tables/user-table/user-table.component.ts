@@ -46,7 +46,6 @@ export class UserTableComponent implements OnInit {
   deleteAdmin(user : User){
     this.userService.delete(user).subscribe(
       res => {
-        console.log(res);
       },
       error => {
       });

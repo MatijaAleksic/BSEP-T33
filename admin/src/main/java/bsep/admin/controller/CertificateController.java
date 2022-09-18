@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -44,6 +45,7 @@ public class CertificateController {
     CertificateRequestService cerRequestInfoService;
 
     @GetMapping
+    @PreAuthorize("hasAuthority('READ_CERTIFICATES')")
     public ResponseEntity<?> findAll() throws CertificateException, CRLException, IOException {
 
         List<Certificate> certificateInfoDTO = certificateService.getAllCertificates();
@@ -83,6 +85,7 @@ public class CertificateController {
     }
 
     @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAuthority('CREATE_CERTIFICATE')")
     public ResponseEntity<?> create(@RequestBody CertificateDTO certificateDTO) {
         try {
             certificateService.generateCertificate(certificateDTO);
@@ -97,6 +100,7 @@ public class CertificateController {
     }
 
     @RequestMapping(method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAuthority('REVOKE_CERTIFICATE')")
     public ResponseEntity<?> revoke(@RequestBody RevokeCertificateDTO revokeCertificateDTO) {
         try {
             certificateService.revokeCertificate(revokeCertificateDTO);

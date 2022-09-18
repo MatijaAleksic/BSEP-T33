@@ -1,16 +1,29 @@
 package bsep.mojakuca.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
-import java.util.ArrayList;
+import java.util.*;
+
+
+import java.sql.Timestamp;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
-import java.util.Set;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+
+//import io.swagger.annotations.ApiModel;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 
 @Entity
@@ -53,11 +66,15 @@ public class User implements UserDetails {
             inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
     private List<Role> roles;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "device_privilege",
-            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "device_id", referencedColumnName = "id"))
-    private Set<Device> devices;
+//    @ManyToMany(fetch = FetchType.EAGER)
+//    @JoinTable(name = "device_privilege",
+//            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+//            inverseJoinColumns = @JoinColumn(name = "device_id", referencedColumnName = "id"))
+//    private Set<Device> devices;
+
+    @JsonIgnore
+    @ManyToMany(mappedBy = "users", fetch = FetchType.LAZY)
+    private Set<Home> homes;
 
 
     public User() { }
@@ -175,11 +192,19 @@ public class User implements UserDetails {
         return true;
     }
 
-    public Set<Device> getDevices() {
-        return devices;
+    public Set<Home> getHomes() {
+        return homes;
     }
 
-    public void setDevices(Set<Device> devices) {
-        this.devices = devices;
+    public void setHomes(Set<Home> homes) {
+        this.homes = homes;
     }
+
+    //    public Set<Device> getDevices() {
+//        return devices;
+//    }
+//
+//    public void setDevices(Set<Device> devices) {
+//        this.devices = devices;
+//    }
 }

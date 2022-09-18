@@ -1,5 +1,9 @@
 package bsep.mojakuca.controller;
 
+import java.security.Principal;
+import java.sql.Timestamp;
+import java.util.*;
+
 import bsep.mojakuca.exception.UserAlredyExistsException;
 import bsep.mojakuca.exception.UserNotFoundException;
 import bsep.mojakuca.model.User;
@@ -14,12 +18,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.security.Principal;
-import java.sql.Timestamp;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 
 // Primer kontrolera cijim metodama mogu pristupiti samo autorizovani korisnici
@@ -112,12 +110,4 @@ public class UserController {
 
 		return new ResponseEntity<>("User succesfully deleted!", HttpStatus.OK);
 	}
-
-
-	@GetMapping("/foo")
-    public Map<String, String> getFoo() {
-        Map<String, String> fooObj = new HashMap<>();
-        fooObj.put("foo", "bar");
-        return fooObj;
-    }
 }

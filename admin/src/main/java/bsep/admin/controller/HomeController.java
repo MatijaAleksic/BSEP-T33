@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -39,6 +40,7 @@ public class HomeController {
     }
 
     @GetMapping("/{userId}")
+    @PreAuthorize("hasAuthority('READ_HOME_FOR_USER')")
     public ResponseEntity<?> findAllForUser(@PathVariable Long userId) {
 
         Set<Home> user_homes = userService.findById(userId).getHomes();
@@ -51,6 +53,7 @@ public class HomeController {
     }
 
     @GetMapping
+    @PreAuthorize("hasAuthority('READ_ALL_HOMES')")
     public ResponseEntity<?> findAll()  {
         List<Home> homes = this.homeService.findAll();
 
@@ -66,6 +69,7 @@ public class HomeController {
     }
 
     @PostMapping("/get")
+    @PreAuthorize("hasAuthority('READ_HOME')")
     public ResponseEntity<?> getOne(@RequestBody IdentificationDTO homeDTO) {
 
         Home existingHome = this.homeService.findById(homeDTO.getId());
@@ -97,8 +101,24 @@ public class HomeController {
         return new ResponseEntity<>(ret, HttpStatus.OK);
     }
 
+    @PostMapping("/getOne")
+    @PreAuthorize("hasAuthority('READ_DEVICES_FOR_HOME')")
+    public ResponseEntity<?> getDevicesForHome(@RequestBody IdentificationDTO homeDTO) {
+
+        Home existingHome = this.homeService.findById(homeDTO.getId());
+
+        if(existingHome == null){
+            return new ResponseEntity<>("Ne postoji kuca sa tim id-om", HttpStatus.BAD_REQUEST);
+        }
+
+        Set<Device> userDevices = existingHome.getDevices();
+
+        return new ResponseEntity<>(userDevices, HttpStatus.OK);
+    }
+
 
     @PostMapping
+    @PreAuthorize("hasAuthority('CREATE_HOME')")
     public ResponseEntity<?> create(@RequestBody HomeDTO homeDTO) {
 
         if(homeDTO.getName().equalsIgnoreCase("")){
@@ -113,6 +133,7 @@ public class HomeController {
 
 
     @PostMapping("/user/add")
+    @PreAuthorize("hasAuthority('ADD_HOME_ATTENDANT')")
     public ResponseEntity<?> addUser(@RequestBody DoubleIdnetificationDTO entity) throws Exception {
 
         User existUser = this.userService.findById(entity.getSecond());
@@ -131,6 +152,7 @@ public class HomeController {
     }
 
     @PostMapping("/user/remove")
+    @PreAuthorize("hasAuthority('REMOVE_HOME_ATTENDANT')")
     public ResponseEntity<?> removeUser(@RequestBody DoubleIdnetificationDTO entity) throws Exception {
 
         User existUser = this.userService.findById(entity.getSecond());
@@ -154,6 +176,7 @@ public class HomeController {
     }
 
     @PostMapping("/device/add")
+    @PreAuthorize("hasAuthority('ADD_HOME_DEVICE')")
     public ResponseEntity<?> addDevice(@RequestBody DoubleIdnetificationDTO entity) throws Exception {
 
         Device existDevice = this.deviceService.findById(entity.getSecond());
@@ -172,6 +195,7 @@ public class HomeController {
     }
 
     @PostMapping("/device/remove")
+    @PreAuthorize("hasAuthority('REMOVE_HOME_DEVICE')")
     public ResponseEntity<?> removeDevice(@RequestBody DoubleIdnetificationDTO entity) throws Exception {
 
         Device existDevice = this.deviceService.findById(entity.getSecond());
@@ -195,6 +219,7 @@ public class HomeController {
     }
 
     @PostMapping("/unattendants")
+    @PreAuthorize("hasAuthority('READ_HOME_UNATTENDANTS')")
     public ResponseEntity<?> getAllUnatendants(@RequestBody IdentificationDTO entity) throws Exception {
 
         Home existingHome = this.homeService.findById(entity.getId());
@@ -213,6 +238,7 @@ public class HomeController {
     }
 
     @PostMapping("/new")
+    @PreAuthorize("hasAuthority('CREATE_HOME')")
     public ResponseEntity<?> newHome(@RequestBody HomeDTO entity) throws Exception {
         Home newHome = new Home(entity.getName());
         List<Home> allHomes = this.homeService.findAll();

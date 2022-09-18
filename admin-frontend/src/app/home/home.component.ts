@@ -69,7 +69,6 @@ export class HomeComponent implements OnInit {
       try {
         obj['body'] = JSON.stringify(JSON.parse(res._body), null, 2);
       } catch (err) {
-        console.log(res);
         obj['body'] = res.error.message;
       }
     } else {

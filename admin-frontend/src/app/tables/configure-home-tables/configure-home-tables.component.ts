@@ -37,12 +37,8 @@ export class ConfigureHomeTablesComponent implements OnInit {
   getHouseInfo(){
     this.homeService.getOne().subscribe(
       res => {
-        console.log(res);
         this.users = res.body.users;
         this.devices = res.body.devices;
-
-        console.log(this.home);
-        console.log(res.body.id);
 
         this.home.id = res.body.id;
         this.home.name = res.body.name;
@@ -61,7 +57,6 @@ export class ConfigureHomeTablesComponent implements OnInit {
       console.log("Success!")
       },
       error => {
-        console.log(error);
       });
 
       this.users.forEach((ele,index) => {if(ele.id === element.id ){ this.users.splice(index, 1);}});
@@ -77,7 +72,6 @@ export class ConfigureHomeTablesComponent implements OnInit {
       console.log("Success!")
       },
       error => {
-        console.log(error);
       });
 
     this.devices.forEach((dev) => {if(dev.id === element.id ){dev.activate = true}});
@@ -93,7 +87,6 @@ export class ConfigureHomeTablesComponent implements OnInit {
       console.log("Success!")
       },
       error => {
-        console.log(error);
       });
 
     this.devices.forEach((dev) => {if(dev.id === element.id ){dev.activate = false}});
@@ -101,3 +94,4 @@ export class ConfigureHomeTablesComponent implements OnInit {
   }
 
 }
+  

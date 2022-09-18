@@ -22,6 +22,9 @@ import {ConfigService} from './service/config.service';
 
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TokenInterceptor } from './interceptor/TokenInterceptor';
+import { MyHomesTableComponent } from './my-homes-table/my-homes-table.component';
+import { DeviceTableComponent } from './device-table/device-table.component';
+import { DeviceMessagesComponent } from './device-messages/device-messages.component';
 
 
 @NgModule({
@@ -31,6 +34,9 @@ import { TokenInterceptor } from './interceptor/TokenInterceptor';
     HomeComponent,
     HeaderComponent,
     LoginComponent,
+    MyHomesTableComponent,
+    DeviceTableComponent,
+    DeviceMessagesComponent,
   ],
   imports: [
     BrowserModule,

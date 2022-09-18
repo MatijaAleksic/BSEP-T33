@@ -8,6 +8,7 @@ import { ConfigService } from './config.service';
 export class HomeService {
 
   selectedHome : any;
+  selectedDevice : any;
 
   constructor(
     private apiService: ApiService,
@@ -71,6 +72,12 @@ export class HomeService {
   }
   setSelectedHome(element){
     this.selectedHome = element;
+  }
+  getSelectedDevice(){
+    return this.selectedDevice;
+  }
+  setSelectedDevice(element){
+    this.selectedDevice = element;
   }
 
 

@@ -53,7 +53,6 @@ export class NewHomeComponent implements OnInit {
 
     this.homeService.newHome(send)
         .subscribe(data => {
-          console.log(data);
           this.router.navigate(['admin-homes-table']);
         
         },

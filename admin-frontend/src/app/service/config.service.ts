@@ -28,6 +28,8 @@ export class ConfigService {
   private _certificate_request_url = this._api_url + "/certificate_request";
 
   private _home_url = this._api_url + "/home"
+  private _device_message_url = this._api_url + "/device_messsage"
+
 
   get login_url(): string {
     return this._login_url;
@@ -73,6 +75,9 @@ export class ConfigService {
   }
   get home_url(): string{
     return this._home_url;
+  }
+  get device_message_url(): string{
+    return this._device_message_url;
   }
 
 }

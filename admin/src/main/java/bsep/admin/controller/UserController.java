@@ -112,12 +112,4 @@ public class UserController {
 
 		return new ResponseEntity<>("User succesfully deleted!", HttpStatus.OK);
 	}
-
-
-	@GetMapping("/foo")
-    public Map<String, String> getFoo() {
-        Map<String, String> fooObj = new HashMap<>();
-        fooObj.put("foo", "bar");
-        return fooObj;
-    }
 }

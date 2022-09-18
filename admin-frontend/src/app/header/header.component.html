@@ -22,11 +22,12 @@
                 <span>Homes</span>
             </button>
 
+            <button *ngIf="hasSignedIn() && isUserAdmin()" mat-button routerLink="/device-messages">
+                <span>Device Messages</span>
+            </button>
+
             <button *ngIf="hasSignedIn() && !isUserAdmin()" mat-button routerLink="/request-certificate">
                 <span>Request Certificate</span>
-            </button>
-            <button *ngIf="hasSignedIn() && !isUserAdmin()" mat-button routerLink="/user-homes-table">
-                <span>Homes</span>
             </button>
 
         </div>

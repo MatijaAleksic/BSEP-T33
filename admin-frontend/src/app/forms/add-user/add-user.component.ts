@@ -75,7 +75,6 @@ export class AddUserComponent implements OnInit {
     if(this.form.value.role === "ROLE_ADMIN"){
       this.userService.addNewAdmin(this.form.value)
         .subscribe(data => {
-          console.log(data);
           //this.router.navigate([this.returnUrl]);
           this.router.navigate(['user-table']);
         
@@ -89,7 +88,6 @@ export class AddUserComponent implements OnInit {
     else{
       this.userService.addNewUser(this.form.value)
         .subscribe(data => {
-          console.log(data);
           this.router.navigate(['user-table']);
         },
           error => {
