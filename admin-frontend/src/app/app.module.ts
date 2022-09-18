@@ -8,8 +8,6 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { CardComponent } from './card/card.component';
 import { HomeComponent } from './home/home.component';
 import { HeaderComponent } from './header/header.component';
-import { UserMenuComponent } from './user-menu/user-menu.component';
-import { LoginComponent } from './login/login.component';
 
 import {AngularMaterialModule} from './angular-material/angular-material.module';
 
@@ -23,13 +21,19 @@ import {ConfigService} from './service/config.service';
 
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TokenInterceptor } from './interceptor/TokenInterceptor';
-import { UserTableComponent } from './user-table/user-table.component';
-import { AddUserComponent } from './add-user/add-user.component';
-import { DeviceTableComponent } from './device-table/device-table.component';
-import { CertificateTableComponent } from './certificate-table/certificate-table.component';
-import { CertificateRequestTableComponent } from './certificate-request-table/certificate-request-table.component';
-import { RequestCertificateComponent } from './request-certificate/request-certificate.component';
-import { RevokeCertificateComponent } from './revoke-certificate/revoke-certificate.component';
+import { LoginComponent } from './forms/login/login.component';
+import { UserTableComponent } from './tables/user-table/user-table.component';
+import { AddUserComponent } from './forms/add-user/add-user.component';
+// import { DeviceTableComponent } from './tables/device-table/device-table.component';
+import { CertificateTableComponent } from './tables/certificate-table/certificate-table.component';
+import { CertificateRequestTableComponent } from './tables/certificate-request-table/certificate-request-table.component';
+import { RequestCertificateComponent } from './forms/request-certificate/request-certificate.component';
+import { RevokeCertificateComponent } from './forms/revoke-certificate/revoke-certificate.component';
+import { AdminHomesTableComponent } from './tables/admin-homes-table/admin-homes-table.component';
+import { ConfigureHomeTablesComponent } from './tables/configure-home-tables/configure-home-tables.component';
+import { AttendantTableComponent } from './tables/attendant-table/attendant-table.component';
+import { NewHomeComponent } from './forms/new-home/new-home.component';
+
 
 @NgModule({
   declarations: [
@@ -37,15 +41,18 @@ import { RevokeCertificateComponent } from './revoke-certificate/revoke-certific
     CardComponent,
     HomeComponent,
     HeaderComponent,
-    UserMenuComponent,
     LoginComponent,
     UserTableComponent,
     AddUserComponent,
-    DeviceTableComponent,
+    // DeviceTableComponent,
     CertificateTableComponent,
     CertificateRequestTableComponent,
     RequestCertificateComponent,
     RevokeCertificateComponent,
+    AdminHomesTableComponent,
+    ConfigureHomeTablesComponent,
+    AttendantTableComponent,
+    NewHomeComponent,
   ],
   imports: [
     BrowserModule,

@@ -10,18 +10,6 @@
                 <span>User Table</span>
             </button>
 
-            <button *ngIf="hasSignedIn() && isUserAdmin()" mat-button routerLink="/certificate-table">
-                <span>Certificate Table</span>
-            </button>
-
-            <button *ngIf="hasSignedIn() && isUserAdmin()" mat-button routerLink="/certificate-request-table">
-                <span>Certificate Request Table</span>
-            </button>
-
-            <button *ngIf="hasSignedIn() && !isUserAdmin()" mat-button routerLink="/request-certificate">
-                <span>Request Certificate</span>
-            </button>
-
         </div>
     </div>
 
@@ -46,11 +34,6 @@
                 mat-ripple>
                 <mat-icon>menu</mat-icon>
             </button> -->
-
-            
-            <!-- <mat-menu #userMenu [overlapTrigger]="true" class="app-header-userMenu" yposition="below">
-                <app-user-menu></app-user-menu>
-            </mat-menu> -->
         </div>
     </div>
 </mat-toolbar>

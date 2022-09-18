@@ -12,20 +12,20 @@ export class DeviceService {
     private config: ConfigService
   ) { }
 
-  getAll(userId : number) {
-    return this.apiService.get(this.config.device_url + '/' + userId);
-  }
-
-  // getAllForUser(id : number){
-  //   return this.apiService.get(this.config.device_user_url + '/' + id);
+  // getAll(userId : number) {
+  //   return this.apiService.get(this.config.device_url + '/' + userId);
   // }
 
-  addDeviceForUser(user_id : number, device_id : number){
-    return this.apiService.post(this.config.device_activate_url, {user_id : user_id, device_id : device_id });
-  }
+  // // getAllForUser(id : number){
+  // //   return this.apiService.get(this.config.device_user_url + '/' + id);
+  // // }
 
-  removeDeviceForUser(user_id : number, device_id : number){
-    return this.apiService.post(this.config.device_deactivate_url, {user_id : user_id, device_id : device_id });
-  }
+  // addDeviceForUser(user_id : number, device_id : number){
+  //   return this.apiService.post(this.config.device_activate_url, {user_id : user_id, device_id : device_id });
+  // }
+
+  // removeDeviceForUser(user_id : number, device_id : number){
+  //   return this.apiService.post(this.config.device_deactivate_url, {user_id : user_id, device_id : device_id });
+  // }
 
 }

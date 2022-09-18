@@ -1,0 +1,22 @@
+#new-home-form{
+    display:flex;
+    flex-direction: column;
+}
+
+.content {
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 30px;
+    width: 50%;
+    padding: 10px;
+  }
+  
+  mat-card {
+    max-width: 350px;
+    text-align: center;
+    animation: fadein 1s;
+    -o-animation: fadein 1s; /* Opera */
+    -moz-animation: fadein 1s; /* Firefox */
+    -webkit-animation: fadein 1s; /* Safari and Chrome */
+  
+  }

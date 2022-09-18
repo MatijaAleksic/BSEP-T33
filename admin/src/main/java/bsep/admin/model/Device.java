@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -20,10 +21,16 @@ public class Device {
     private String name;
 
     @JsonIgnore
-    @ManyToMany(mappedBy = "privileges", fetch = FetchType.LAZY)
-    private Set<Role> devices;
+    @ManyToMany(mappedBy = "devices", fetch = FetchType.LAZY)
+    private Set<Home> homes;
 
     public Device() {
+    }
+
+    public Device(Long id, String name, Set<Home> homes) {
+        this.id = id;
+        this.name = name;
+        this.homes = homes;
     }
 
     public Device(Long id, String name) {
@@ -45,5 +52,13 @@ public class Device {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Set<Home> getHomes() {
+        return homes;
+    }
+
+    public void setHomes(Set<Home> homes) {
+        this.homes = homes;
     }
 }
