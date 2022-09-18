@@ -34,6 +34,8 @@ import { ConfigureHomeTablesComponent } from './tables/configure-home-tables/con
 import { AttendantTableComponent } from './tables/attendant-table/attendant-table.component';
 import { NewHomeComponent } from './forms/new-home/new-home.component';
 import { DeviceMessagesComponent } from './tables/device-messages/device-messages.component';
+import { AuthGuard } from './service/auth.guard';
+import { RoleGuard } from './service/role.guard';
 
 
 @NgModule({
@@ -73,6 +75,8 @@ import { DeviceMessagesComponent } from './tables/device-messages/device-message
     },
     FooService,
     AuthService,
+    AuthGuard,
+    RoleGuard,
     ApiService,
     UserService,
     ConfigService,

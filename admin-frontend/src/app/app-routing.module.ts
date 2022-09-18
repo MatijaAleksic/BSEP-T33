@@ -6,6 +6,8 @@ import { NewHomeComponent } from './forms/new-home/new-home.component';
 import { RequestCertificateComponent } from './forms/request-certificate/request-certificate.component';
 import { RevokeCertificateComponent } from './forms/revoke-certificate/revoke-certificate.component';
 import { HomeComponent } from './home/home.component';
+import { AuthGuard } from './service/auth.guard';
+import { RoleGuard } from './service/role.guard';
 import { AdminHomesTableComponent } from './tables/admin-homes-table/admin-homes-table.component';
 import { AttendantTableComponent } from './tables/attendant-table/attendant-table.component';
 import { CertificateRequestTableComponent } from './tables/certificate-request-table/certificate-request-table.component';
@@ -26,15 +28,17 @@ const routes: Routes = [
   },
   {
     path: 'login',
-    component: LoginComponent,
+    component: LoginComponent
   },
   {
     path: 'user-table',
     component: UserTableComponent,
+    canActivate:[AuthGuard, RoleGuard],
   },
   {
     path: 'add-user',
     component: AddUserComponent,
+    canActivate:[AuthGuard, RoleGuard]
   },
   // {
   //   path: 'device-table',
@@ -43,43 +47,53 @@ const routes: Routes = [
   {
     path: 'certificate-table',
     component: CertificateTableComponent,
+    canActivate:[AuthGuard, RoleGuard]
   },
   {
     path: 'certificate-request-table',
     component: CertificateRequestTableComponent,
+    canActivate:[AuthGuard, RoleGuard]
   },
   {
     path: 'request-certificate',
     component: RequestCertificateComponent,
+    canActivate:[AuthGuard]
   },
   {
     path: 'revoke-certificate',
     component: RevokeCertificateComponent,
+    canActivate:[AuthGuard, RoleGuard]
   },
   {
     path: 'admin-homes-table',
     component: AdminHomesTableComponent,
+    canActivate:[AuthGuard, RoleGuard]
   },
   {
     path: 'configure-home-tables',
     component: ConfigureHomeTablesComponent,
+    canActivate:[AuthGuard, RoleGuard]
   },
   {
     path: 'add-attendant',
     component: AttendantTableComponent,
+    canActivate:[AuthGuard, RoleGuard]
   },
   {
     path: 'new-home',
     component: NewHomeComponent,
+    canActivate:[AuthGuard, RoleGuard]
   },
   {
     path: 'device-messages',
     component: DeviceMessagesComponent,
+    canActivate:[AuthGuard, RoleGuard]
   },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
+  providers: [AuthGuard, RoleGuard]
 })
 export class AppRoutingModule { }

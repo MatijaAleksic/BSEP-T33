@@ -40,8 +40,8 @@ export class AttendantTableComponent implements OnInit {
   Add(element){
     this.homeService.addAttendant(element.id).subscribe(
       res => {
-      },
-      error => {
+      }, 
+      error => { 
         // console.log(error.message);
       });
 

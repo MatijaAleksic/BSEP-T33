@@ -66,7 +66,7 @@ public class AuthenticationController {
         //headers.add("Access-Control-Expose-Headers", "Set-Cookie");
 
         // Vrati token kao odgovor na uspesnu autentifikaciju
-        return ResponseEntity.ok().headers(headers).body(new UserTokenState(jwt, expiresIn));
+        return ResponseEntity.ok().headers(headers).body(new UserTokenState(jwt, expiresIn, user.getRoles()));
     }
 
     // Endpoint za registraciju novog korisnika

@@ -11,6 +11,7 @@ import { HttpHeaders } from '@angular/common/http';
 export class UserService {
 
   currentUser = null;
+  userRole : any = null;
 
   constructor(
     private apiService: ApiService,

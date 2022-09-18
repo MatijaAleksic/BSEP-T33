@@ -65,12 +65,12 @@ export class HomeComponent implements OnInit {
     obj['method'] = 'GET';
     if (res.ok === false) {
       // err
-      obj['status'] = res.status;
+      obj['status'] = res.status; 
       try {
         obj['body'] = JSON.stringify(JSON.parse(res._body), null, 2);
       } catch (err) {
         obj['body'] = res.error.message;
-      }
+      } 
     } else {
       // 200
       obj['status'] = 200;

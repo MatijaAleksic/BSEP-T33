@@ -25,6 +25,8 @@ import { TokenInterceptor } from './interceptor/TokenInterceptor';
 import { MyHomesTableComponent } from './my-homes-table/my-homes-table.component';
 import { DeviceTableComponent } from './device-table/device-table.component';
 import { DeviceMessagesComponent } from './device-messages/device-messages.component';
+import { AuthGuard } from './service/auth.guard';
+import { RoleGuard } from './service/role.guard';
 
 
 @NgModule({
@@ -55,6 +57,8 @@ import { DeviceMessagesComponent } from './device-messages/device-messages.compo
     },
     FooService,
     AuthService,
+    AuthGuard,
+    RoleGuard,
     ApiService,
     UserService,
     ConfigService,

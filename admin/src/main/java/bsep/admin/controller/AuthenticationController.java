@@ -6,6 +6,7 @@ import bsep.admin.DTO.JwtAuthenticationRequest;
 import bsep.admin.DTO.UserRequest;
 import bsep.admin.DTO.UserTokenState;
 import bsep.admin.Exceptions.ResourceConflictException;
+import bsep.admin.model.Role;
 import bsep.admin.model.User;
 import bsep.admin.service.UserService;
 import bsep.admin.util.TokenUtils;
@@ -70,7 +71,7 @@ public class AuthenticationController {
         //headers.add("Access-Control-Expose-Headers", "Set-Cookie");
 
         // Vrati token kao odgovor na uspesnu autentifikaciju
-        return ResponseEntity.ok().headers(headers).body(new UserTokenState(jwt, expiresIn));
+        return ResponseEntity.ok().headers(headers).body(new UserTokenState(jwt, expiresIn, user.getRoles()));
     }
 
     // Endpoint za registraciju novog korisnika

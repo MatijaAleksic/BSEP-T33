@@ -10,6 +10,8 @@ import { _throw } from 'rxjs/observable/throw';
 @Injectable()
 export class AuthService {
 
+  authStatus = false;
+
   constructor(
     private apiService: ApiService,
     private userService: UserService,
@@ -41,10 +43,14 @@ export class AuthService {
             // "sslKey" : "src/assets/admin.key",
             // "sslCert" : "src/assets/admin@gmail.com.der",
 
+        console.log(response.body);
+        this.userService.userRole = response.body.userRoles[0];
+
         this.token = response.body;
         this.access_token = response.body.accessToken;
         this.date = new Date();
         sessionStorage.setItem("jwt", response.body.accessToken);
+        this.authStatus = true;
       }));
   }
 
@@ -52,7 +58,9 @@ export class AuthService {
   logout() {
     this.userService.currentUser = null;
     this.access_token = null;
+    this.authStatus = false;
     this.router.navigate(['/login']);
+  
   }
 
   tokenIsPresent() {
@@ -65,6 +73,10 @@ export class AuthService {
 
   getExpires(){
     return this.token;
+  }
+
+  getAuthStatus(){
+    return this.authStatus;
   }
 
 

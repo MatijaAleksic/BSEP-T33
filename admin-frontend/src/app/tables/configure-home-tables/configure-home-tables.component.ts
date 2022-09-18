@@ -55,7 +55,7 @@ export class ConfigureHomeTablesComponent implements OnInit {
     this.homeService.removeAttendant(send).subscribe
     (data => {
       console.log("Success!")
-      },
+      },  
       error => {
       });
 
