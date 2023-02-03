@@ -1,6 +1,7 @@
 package bsep.admin.DTO;
 
 import bsep.admin.model.Role;
+import bsep.admin.model.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,19 +11,18 @@ public class UserTokenState {
 	
     private String accessToken;
     private Long expiresIn;
-
-    private List<Role> userRoles;
+    private User user;
 
     public UserTokenState() {
         this.accessToken = null;
         this.expiresIn = null;
-        this.userRoles = null;
+        this.user = null;
     }
 
-    public UserTokenState(String accessToken, long expiresIn,  List<Role> userRoles) {
-        this.accessToken = accessToken;
+    public UserTokenState(String jwt, long expiresIn, User user) {
+        this.accessToken = jwt;
         this.expiresIn = expiresIn;
-        this.userRoles = userRoles;
+        this.user = user;
     }
 
     public String getAccessToken() {
@@ -41,11 +41,11 @@ public class UserTokenState {
         this.expiresIn = expiresIn;
     }
 
-    public List<Role> getUserRoles() {
-        return userRoles;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserRoles(List<Role> userRoles) {
-        this.userRoles = userRoles;
+    public void setUser(User user) {
+        this.user = user;
     }
 }

@@ -100,3 +100,8 @@ baseline.json
 
 # Husky
 .husky/_
+
+#log files
+*.gz
+
+

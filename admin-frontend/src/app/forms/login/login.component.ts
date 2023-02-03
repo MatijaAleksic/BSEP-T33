@@ -65,9 +65,6 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit() {
-    /**
-     * Innocent until proven guilty
-     */
     this.notification = undefined;
     this.submitted = true;
 

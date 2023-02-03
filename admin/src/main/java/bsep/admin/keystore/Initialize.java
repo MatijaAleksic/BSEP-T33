@@ -1,10 +1,13 @@
 package bsep.admin.keystore;
 
+import bsep.admin.DTO.CertificateCreateDTO;
 import bsep.admin.model.SubjectData;
 
 import org.bouncycastle.asn1.x500.X500Name;
 import org.bouncycastle.asn1.x500.X500NameBuilder;
 import org.bouncycastle.asn1.x500.style.BCStyle;
+import org.bouncycastle.asn1.x509.Extension;
+import org.bouncycastle.asn1.x509.GeneralName;
 import org.bouncycastle.cert.X509CRLHolder;
 import org.bouncycastle.cert.X509CertificateHolder;
 import org.bouncycastle.cert.X509v2CRLBuilder;
@@ -26,6 +29,7 @@ import java.io.OutputStream;
 import java.math.BigInteger;
 import java.security.*;
 import java.security.cert.CRLException;
+import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.security.cert.X509CRL;
 import java.security.cert.X509Certificate;
@@ -57,32 +61,65 @@ public class Initialize {
     public void createCerAndCrlForRootCA() {
         try {
             if (!keyStoreWriter.loadKeyStore())
-                createCertificate();
+                createStarterCertificates();
         } catch (OperatorCreationException | CertificateException | CRLException | IOException e) {
             e.printStackTrace();
         }
     }
 
-    private void createCertificate() throws OperatorCreationException, CertificateException, CRLException, IOException {
-        keyStoreWriter.createKeyStore();
-        KeyPair keyPair = generateKeyPair();
-        SubjectData subjectData = generateSubjectDataPredefined();
+    private void createStarterCertificates() throws CertificateException, IOException, OperatorCreationException, CRLException {
 
-        assert keyPair != null;
+        keyStoreWriter.createKeyStore();
+
+        CertificateCreateDTO root = new CertificateCreateDTO("admin", "admin", "admin", "Administracija", "Organization Unit", "Country", "admin@gmail.com", "1");
+        CertificateCreateDTO frontend = new CertificateCreateDTO("localhost", "frontend", "frontend", "FrontendOrganization", "FrontendUnit", "Serbia", "frontend@gmail.com", "2");
+
+        SubjectData rootSubjectData = generateSubjectData(root);
+        SubjectData frontendSubjectData = generateSubjectData(frontend);
+
+        KeyPair keyPairRoot = generateKeyPair();
+        KeyPair keyPairFrontend= generateKeyPair();
+
+        assert keyPairRoot != null;
+        X509Certificate rootCertificate = generateCertificate(rootSubjectData, keyPairRoot, keyPairRoot.getPrivate(), rootSubjectData.getX500name());
+
+        assert keyPairFrontend != null;
+        X509Certificate frontendCertificate = generateCertificate(frontendSubjectData, keyPairFrontend, keyPairRoot.getPrivate(), rootSubjectData.getX500name());
+
+        keyStoreWriter.writeRootCA(adminAlias, keyPairRoot.getPrivate(), rootCertificate);
+
+//        keyStoreWriter.saveKeyStore();
+//        Certificate adminCert = keyStoreReader.readCertificate(adminAlias);
+
+        Certificate[] subjectCertificateChain = { frontendCertificate, rootCertificate};    // adminCert };
+        keyStoreWriter.write("frontend", keyPairFrontend.getPrivate(), subjectCertificateChain);
+
+        keyStoreWriter.saveKeyStore();
+
+        createCRL(keyPairRoot.getPrivate(), rootSubjectData.getX500name());
+    }
+
+    private X509Certificate generateCertificate(SubjectData subjectData, KeyPair keyPair, PrivateKey issuer, X500Name issuerData) throws OperatorCreationException, CertificateException, CRLException, IOException {
+
         subjectData.setPublicKey(keyPair.getPublic());
         JcaContentSignerBuilder builder = new JcaContentSignerBuilder("SHA256WithRSAEncryption");
         builder = builder.setProvider("BC");
-        ContentSigner contentSigner = builder.build(keyPair.getPrivate());
+        ContentSigner contentSigner = builder.build(issuer);
 
         Date startDate = subjectData.getStartDate();
         Date endDate = subjectData.getEndDate();
 
-        X509v3CertificateBuilder certGen = new JcaX509v3CertificateBuilder(subjectData.getX500name(),
+        X509v3CertificateBuilder certGen = new JcaX509v3CertificateBuilder(issuerData,
                 new BigInteger(subjectData.getSerialNumber()),
                 startDate,
                 endDate,
                 subjectData.getX500name(),
                 keyPair.getPublic());
+
+
+//        GeneralName subjectAltName = new GeneralName(GeneralName.dNSName, "localhost");
+        //builder.addOtherName(PKCSObjectIdentifiers.pkcs_9_at_subjectAltName, subjectAltName);
+//        certGen.addExtension( Extension.subjectAlternativeName, false, subjectAltName );
 
         X509CertificateHolder certHolder = certGen.build(contentSigner);
 
@@ -90,11 +127,7 @@ public class Initialize {
         certConverter = certConverter.setProvider("BC");
 
         X509Certificate createdCertificate = certConverter.getCertificate(certHolder);
-
-        keyStoreWriter.writeRootCA(adminAlias, keyPair.getPrivate(), createdCertificate);
-        keyStoreWriter.saveKeyStore();
-
-        createCRL(keyPair.getPrivate(), subjectData.getX500name());
+        return createdCertificate;
     }
 
     private void createCRL(PrivateKey pk, X500Name issuerName) throws CRLException, IOException, OperatorCreationException {
@@ -119,24 +152,13 @@ public class Initialize {
         os.close();
     }
 
-    private SubjectData generateSubjectDataPredefined() {
-
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-
-        // Datumi od kad do kad vazi sertifikat
-//        LocalDateTime startDate = LocalDateTime.now();
-//        startDate.format(dtf);
-//
-//        LocalDateTime endDate = startDate.plusYears(2);
-//        endDate.format(dtf);
-
-        Date startDate = new Date();
+    private SubjectData generateSubjectData(CertificateCreateDTO temp) {
 
         //Izdaje se sertifikat na dve godine
+        Date startDate = new Date();
         Calendar c = Calendar.getInstance();
         c.setTime(startDate);
         c.add(Calendar.YEAR, 10);
-
         Date endDate = c.getTime();
 
         Calendar curCal = new GregorianCalendar(TimeZone.getDefault());
@@ -146,16 +168,19 @@ public class Initialize {
 
         // klasa X500NameBuilder pravi X500Name objekat koji predstavlja podatke o vlasniku
         X500NameBuilder builder = new X500NameBuilder(BCStyle.INSTANCE);
-        builder.addRDN(BCStyle.CN, "admin");
-        builder.addRDN(BCStyle.SURNAME, "admin");
-        builder.addRDN(BCStyle.GIVENNAME, "admin");
-        builder.addRDN(BCStyle.O, "Administracija");
-        builder.addRDN(BCStyle.OU, "OU");
-        builder.addRDN(BCStyle.C, "CC");
-        builder.addRDN(BCStyle.E, "admin@gmail.com");
+
+        builder.addRDN(BCStyle.CN, temp.getCompanyName());
+        builder.addRDN(BCStyle.SURNAME, temp.getSurName());
+        builder.addRDN(BCStyle.GIVENNAME, temp.getGivenName());
+        builder.addRDN(BCStyle.O, temp.getOrganization());
+        builder.addRDN(BCStyle.OU, temp.getOrganizationUnit());
+        builder.addRDN(BCStyle.C, temp.getCountry());
+        builder.addRDN(BCStyle.E, temp.getEmail());
 
         // UID (USER ID) je ID korisnika
-        builder.addRDN(BCStyle.UID, String.valueOf(1));
+        builder.addRDN(BCStyle.UID, temp.getUserId());
+
+
 
         // Kreiraju se podaci za sertifikat, sto ukljucuje:
         // - javni kljuc koji se vezuje za sertifikat

@@ -33,7 +33,7 @@ const routes: Routes = [
   {
     path: 'user-table',
     component: UserTableComponent,
-    canActivate:[AuthGuard, RoleGuard],
+    canActivate:[AuthGuard], //, RoleGuard
   },
   {
     path: 'add-user',

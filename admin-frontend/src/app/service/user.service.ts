@@ -10,8 +10,7 @@ import { HttpHeaders } from '@angular/common/http';
 })
 export class UserService {
 
-  currentUser = null;
-  userRole : any = null;
+  
 
   constructor(
     private apiService: ApiService,
@@ -19,13 +18,13 @@ export class UserService {
   ) {
   }
 
-  getMyInfo() {
-    return this.apiService.get(this.config.whoami_url)
-      .pipe(map(user => {
-        this.currentUser = user;
-        return user;
-      }));
-  }
+  // getMyInfo() {
+  //   return this.apiService.get(this.config.whoami_url)
+  //     .pipe(map(user => {
+  //       this.currentUser = user;
+  //       return user;
+  //     }));
+  // }
 
   getOne(id:string) {
     return this.apiService.get(this.config.users_url + '/' + id);

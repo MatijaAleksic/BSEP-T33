@@ -207,4 +207,6 @@ public class User implements UserDetails {
 //    public void setDevices(Set<Device> devices) {
 //        this.devices = devices;
 //    }
+
+
 }

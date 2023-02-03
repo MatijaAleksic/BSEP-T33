@@ -14,7 +14,6 @@ export class AuthService {
 
   constructor(
     private apiService: ApiService,
-    private userService: UserService,
     private config: ConfigService,
     private router: Router,
   ) {
@@ -22,41 +21,37 @@ export class AuthService {
 
   private token = null;
   private access_token = null;
+  private currentUser = null;
+  private userRole : any = null;
+
   private date = null;
 
+
   login(user) {
-    const loginHeaders = new HttpHeaders({
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
-    });
-    // const body = `username=${user.username}&password=${user.password}`;
+
     const body = {
       'username': user.username,
       'password': user.password
     };
 
-    return this.apiService.post(this.config.login_url, JSON.stringify(body), loginHeaders)
+    return this.apiService.post(this.config.login_url, JSON.stringify(body))
       .pipe(map((response) => {
         console.log('Login success');
+        console.log(response);
 
-            // "ssl" : true,
-            // "sslKey" : "src/assets/admin.key",
-            // "sslCert" : "src/assets/admin@gmail.com.der",
+        this.currentUser = response.user;
+        this.userRole = response.user.roles;
 
-        console.log(response.body);
-        this.userService.userRole = response.body.userRoles[0];
-
-        this.token = response.body;
-        this.access_token = response.body.accessToken;
-        this.date = new Date();
-        sessionStorage.setItem("jwt", response.body.accessToken);
+        this.access_token = response.accessToken;
         this.authStatus = true;
+
+        sessionStorage.setItem("jwt", response.accessToken);
       }));
   }
 
 
   logout() {
-    this.userService.currentUser = null;
+    this.currentUser = null;
     this.access_token = null;
     this.authStatus = false;
     this.router.navigate(['/login']);
@@ -77,6 +72,30 @@ export class AuthService {
 
   getAuthStatus(){
     return this.authStatus;
+  }
+
+  getUserRole(){
+    return this.userRole;
+  }
+
+  getCurrentUser(){
+    return this.currentUser;
+  }
+
+
+  setCurrentUser(user){
+    this.currentUser = user;
+  }
+  setUserRole(role){
+    this.userRole = role;
+  }
+
+  setAuthStatus(authStatus){
+    this.authStatus = authStatus;
+  }
+
+  setAccessToken(accessToken){
+    this.access_token = accessToken;
   }
 
 

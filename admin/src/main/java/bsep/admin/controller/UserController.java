@@ -53,7 +53,7 @@ public class UserController {
 	}
 
 	@GetMapping("/user/all")
-	@PreAuthorize("hasAuthority('READ_USERS')")
+	//@PreAuthorize("hasAuthority('READ_USERS')")
 	public List<User> loadAll() {
 		LOG.info("Get all users");
 		return this.userService.findAll();

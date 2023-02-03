@@ -63,6 +63,9 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
+            "ssl": true,
+            "sslCert": "ssl/frontend.cer",
+            "sslKey": "ssl/frontend.pkcs8",
             "browserTarget": "admin-frontend:build",
             "port": 4200
           },

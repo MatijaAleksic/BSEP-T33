@@ -34,7 +34,7 @@ public class TokenUtils {
     public String SECRET;
 
     // Period vazenja tokena - 15 minuta
-    @Value("900000")
+    @Value("90000000")
     private int EXPIRES_IN;
 
     // Naziv headera kroz koji ce se prosledjivati JWT u komunikaciji server-klijent
@@ -160,6 +160,7 @@ public class TokenUtils {
     public String getFingerprintFromCookie(HttpServletRequest request) {
         String userFingerprint = null;
         if (request.getCookies() != null && request.getCookies().length > 0) {
+            System.out.println("Usao ovdje");
             List<Cookie> cookies = Arrays.stream(request.getCookies()).collect(Collectors.toList());
             Optional<Cookie> cookie = cookies.stream().filter(c -> "Fingerprint".equals(c.getName())).findFirst();
 

@@ -9,6 +9,9 @@ import {AuthService} from '../service/auth.service';
 })
 export class HeaderComponent implements OnInit {
 
+  private signedIn = true;
+  private userAdmin = true;
+
   constructor( 
     private authService: AuthService,
     private userService: UserService
@@ -18,7 +21,7 @@ export class HeaderComponent implements OnInit {
   }
 
   hasSignedIn() {
-    return !!this.userService.currentUser;
+    return !!this.authService.getCurrentUser();
   }
 
   logout() {
@@ -26,8 +29,9 @@ export class HeaderComponent implements OnInit {
   }
 
   isUserAdmin(){
-    if(this.userService.currentUser != null){
-      for (let entry of this.userService.currentUser.roles) {
+    if(this.authService.getCurrentUser() != null){
+
+      for (let entry of this.authService.getUserRole()) {
         if(entry.name === "ROLE_ADMIN"){
           return true;
         }
@@ -36,7 +40,7 @@ export class HeaderComponent implements OnInit {
   }
 
   userName() {
-    const user = this.userService.currentUser;
+    const user = this.authService.getCurrentUser();
     return user.firstName + ' ' + user.lastName;
   }
 
