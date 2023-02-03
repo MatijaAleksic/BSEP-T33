@@ -104,4 +104,8 @@ baseline.json
 #log files
 *.gz
 
+#ssl files
+*.cer
+*.pkcs8
+
 
