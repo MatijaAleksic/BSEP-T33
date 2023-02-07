@@ -40,6 +40,8 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;
 
+import java.util.UUID;
+
 @Component
 public class Initialize {
 
@@ -71,8 +73,8 @@ public class Initialize {
 
         keyStoreWriter.createKeyStore();
 
-        CertificateCreateDTO root = new CertificateCreateDTO("admin", "admin", "admin", "Administracija", "Organization Unit", "Country", "admin@gmail.com", "1");
-        CertificateCreateDTO frontend = new CertificateCreateDTO("localhost", "frontend", "frontend", "FrontendOrganization", "FrontendUnit", "Serbia", "frontend@gmail.com", "2");
+        CertificateCreateDTO root = new CertificateCreateDTO("admin-backend", "admin", "admin", "Administracija", "Organization Unit", "Country", "admin@gmail.com");
+        CertificateCreateDTO frontend = new CertificateCreateDTO("admin-frontend", "frontend", "frontend", "FrontendOrganization", "FrontendUnit", "Serbia", "frontend@gmail.com");
 
         SubjectData rootSubjectData = generateSubjectData(root);
         SubjectData frontendSubjectData = generateSubjectData(frontend);
@@ -86,13 +88,11 @@ public class Initialize {
         assert keyPairFrontend != null;
         X509Certificate frontendCertificate = generateCertificate(frontendSubjectData, keyPairFrontend, keyPairRoot.getPrivate(), rootSubjectData.getX500name());
 
-        keyStoreWriter.writeRootCA(adminAlias, keyPairRoot.getPrivate(), rootCertificate);
+        keyStoreWriter.writeRootCA(root.getCompanyName(), keyPairRoot.getPrivate(), rootCertificate);
 
-//        keyStoreWriter.saveKeyStore();
-//        Certificate adminCert = keyStoreReader.readCertificate(adminAlias);
 
-        Certificate[] subjectCertificateChain = { frontendCertificate, rootCertificate};    // adminCert };
-        keyStoreWriter.write("frontend", keyPairFrontend.getPrivate(), subjectCertificateChain);
+        Certificate[] subjectCertificateChain = { frontendCertificate, rootCertificate};
+        keyStoreWriter.write(frontend.getCompanyName(), keyPairFrontend.getPrivate(), subjectCertificateChain);
 
         keyStoreWriter.saveKeyStore();
 
@@ -158,7 +158,7 @@ public class Initialize {
         Date startDate = new Date();
         Calendar c = Calendar.getInstance();
         c.setTime(startDate);
-        c.add(Calendar.YEAR, 10);
+        c.add(Calendar.YEAR, 3);
         Date endDate = c.getTime();
 
         Calendar curCal = new GregorianCalendar(TimeZone.getDefault());
@@ -178,7 +178,7 @@ public class Initialize {
         builder.addRDN(BCStyle.E, temp.getEmail());
 
         // UID (USER ID) je ID korisnika
-        builder.addRDN(BCStyle.UID, temp.getUserId());
+        builder.addRDN(BCStyle.UID, System.currentTimeMillis() + "-" + UUID.randomUUID().toString());
 
 
 

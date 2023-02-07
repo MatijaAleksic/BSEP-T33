@@ -36,7 +36,7 @@ export class CertificateTableComponent implements OnInit {
   }
 
   revoke(element){
-    this.certificateService.setRevokeEmail(element.email);
+    this.certificateService.setRevokeAlias(element.commonName);
     this.router.navigate(['revoke-certificate']);
   }
 

@@ -10,7 +10,7 @@ public class CertificateRequest {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
-    @Column(name = "commonName", unique = false, nullable = false)
+    @Column(name = "commonName", unique = true, nullable = false)
     private String commonName;
 
     @Column(name = "surname", unique = false, nullable = false)
@@ -28,14 +28,14 @@ public class CertificateRequest {
     @Column(name = "country", unique = false, nullable = false)
     private String country;
 
-    @Column(name = "email", unique = false, nullable = false)
+    @Column(name = "email", unique = false, nullable = false) //Promjeni unique u true posle developmenta
     private String email;
 
-    @Column(name = "uid", unique = false, nullable = false)
-    private Long uid;
+    @Column(name = "extension", unique = false, nullable = false)
+    private String extension;
 
 
-    public CertificateRequest(String commonName, String surname, String givenName, String organization, String organizationUnit, String country, String email, Long uid) {
+    public CertificateRequest(String commonName, String surname, String givenName, String organization, String organizationUnit, String country, String email, String extension) {
     	this.commonName = commonName;
         this.surname = surname;
         this.givenName = givenName;
@@ -43,7 +43,7 @@ public class CertificateRequest {
         this.organizationUnit = organizationUnit;
         this.country = country;
         this.email = email;
-        this.uid = uid;
+        this.extension = extension;
     }
 
     public CertificateRequest() {
@@ -109,11 +109,15 @@ public class CertificateRequest {
         this.email = email;
     }
 
-    public Long getUid() {
-        return uid;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public void setUid(Long uid) {
-        this.uid = uid;
+    public String getExtension() {
+        return extension;
+    }
+
+    public void setExtension(String extension) {
+        this.extension = extension;
     }
 }

@@ -56,18 +56,11 @@ public class CertificateRequestController {
 
 	@RequestMapping(value = "/delete", method = RequestMethod.DELETE, consumes = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasAuthority('DELETE_CERTIFICATE_REQUESTS')")
-	public ResponseEntity<?> delete(@RequestBody String id) throws CertificateNotFoundException {
-		Long realId = null;
-		try {
-			realId = Long.parseLong(id);
-		} catch (Exception e) {
-			return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
-		}
-
+	public ResponseEntity<?> delete(@RequestBody String commonName) throws CertificateNotFoundException {
 		try {
 			LOG.info("Delete Certificate Requests");
 
-			return new ResponseEntity<>(certificateRequestService.deleteByUid(realId), HttpStatus.OK);
+			return new ResponseEntity<>(certificateRequestService.deleteByCommonName(commonName), HttpStatus.OK);
 //				return new ResponseEntity<>(certificateRequestService.delete(realId), HttpStatus.OK);
 
 		} catch (Exception e) {

@@ -9,6 +9,8 @@ import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.List;
 
+import bsep.admin.DTO.EmailDTO;
+import bsep.admin.service.EmailService;
 import org.bouncycastle.asn1.x500.RDN;
 import org.bouncycastle.asn1.x500.X500Name;
 import org.bouncycastle.asn1.x500.style.BCStyle;
@@ -45,6 +47,9 @@ public class CertificateController {
 
     @Autowired
     CertificateRequestService cerRequestInfoService;
+
+    @Autowired
+    EmailService emailService;
 
     private static final Logger LOG = LoggerFactory.getLogger(CertificateController.class);
 
@@ -87,7 +92,6 @@ public class CertificateController {
 
         LOG.info("Get all certificates");
 
-
         return new ResponseEntity<>(certInfos, HttpStatus.OK);
     }
 
@@ -95,14 +99,20 @@ public class CertificateController {
     @PreAuthorize("hasAuthority('CREATE_CERTIFICATE')")
     public ResponseEntity<?> create(@RequestBody CertificateDTO certificateDTO) {
         try {
-            certificateService.generateCertificate(certificateDTO);
+            Certificate generatedCertificate = certificateService.generateCertificate(certificateDTO);
+            cerRequestInfoService.delete(certificateDTO.getCommonName());
 
-            //certificateService.createCertificate(certificateDTO);
-            cerRequestInfoService.delete(certificateDTO.getId());
-            LOG.info("Create Certificates");
+            //STAVI OVDJE certificateDTO.getEmail() umesto ovoga mog maila da bi slao musteriji ne na isti
+            EmailDTO email = new EmailDTO(certificateDTO.getEmail(),
+                    "Hello your certificate has been accepted!","Certificate Delivery", generatedCertificate, certificateDTO.getExtension());
+            this.emailService.sendMailWithAttachment(email);
+
+            LOG.info("Create Certificate");
+
             return new ResponseEntity<>("Success", HttpStatus.CREATED);
 
         } catch (Exception e) {
+            e.printStackTrace();
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
 

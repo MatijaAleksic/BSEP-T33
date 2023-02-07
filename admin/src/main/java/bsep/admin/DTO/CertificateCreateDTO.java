@@ -16,7 +16,7 @@ public class CertificateCreateDTO {
     public CertificateCreateDTO() {
     }
 
-    public CertificateCreateDTO(String companyName, String givenName, String surName, String organization, String organizationUnit, String country, String email, String userId) {
+    public CertificateCreateDTO(String companyName, String givenName, String surName, String organization, String organizationUnit, String country, String email) {
         this.companyName = companyName;
         this.givenName = givenName;
         this.surName = surName;
@@ -24,7 +24,6 @@ public class CertificateCreateDTO {
         this.organizationUnit = organizationUnit;
         this.country = country;
         this.email = email;
-        this.userId = userId;
     }
 
     public String getCompanyName() {

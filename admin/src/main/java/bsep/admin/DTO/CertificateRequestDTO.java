@@ -8,13 +8,14 @@ public class CertificateRequestDTO {
     private String organizationUnit;
     private String country;
     private String email;
-    private Long uid;
+
+    private String certExtension;
 
     public CertificateRequestDTO() {
     }
 
     public CertificateRequestDTO(String commonName, String surname, String givenName, String organization,
-                                 String organizationUnit, String country, String email, Long uid) {
+                                 String organizationUnit, String country, String email) {
     	this.commonName = commonName;
         this.surname = surname;
         this.givenName = givenName;
@@ -22,7 +23,17 @@ public class CertificateRequestDTO {
         this.organizationUnit = organizationUnit;
         this.country = country;
         this.email = email;
-        this.uid = uid;
+    }
+
+    public CertificateRequestDTO(String commonName, String surname, String givenName, String organization, String organizationUnit, String country, String email, String certExtension) {
+        this.commonName = commonName;
+        this.surname = surname;
+        this.givenName = givenName;
+        this.organization = organization;
+        this.organizationUnit = organizationUnit;
+        this.country = country;
+        this.email = email;
+        this.certExtension = certExtension;
     }
 
     public String getCommonName() {
@@ -81,11 +92,11 @@ public class CertificateRequestDTO {
         this.email = email;
     }
 
-    public Long getUid() {
-        return uid;
+    public String getCertExtension() {
+        return certExtension;
     }
 
-    public void setUid(Long uid) {
-        this.uid = uid;
+    public void setCertExtension(String certExtension) {
+        this.certExtension = certExtension;
     }
 }

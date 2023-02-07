@@ -16,7 +16,7 @@ export class CertificateRequestTableComponent implements OnInit {
   @ViewChild('myTable', {static: false}) myTable: MatTable<any>;
   
   certificateRequests: CertificateRequest[];
-  displayedColumns: string[] = ["commonName", "surname", "givenName", "organization", "organizationUnit", "country", "email", "uid", "accept", "decline"];
+  displayedColumns: string[] = ["commonName", "surname", "givenName", "organization", "organizationUnit", "country", "email", "accept", "decline"];
 
   constructor(
     private router: Router,
@@ -40,13 +40,16 @@ export class CertificateRequestTableComponent implements OnInit {
   }
 
   accept(element){
+    
+    
+    let certificate = { email : element.email, commonName: element.commonName, extension: element.certExtension}
 
-    let certificate = { id : element.uid, email : element.email}
+    console.log(certificate);
 
     this.certificateService.create(certificate).subscribe(
-      res => {  },
+      res => { console.log(res); },
       () => {
-             this.certificateRequests.forEach((ele,index) => {if(ele.uid === element.uid ){ this.certificateRequests.splice(index, 1);}});
+             this.certificateRequests.forEach((ele,index) => {if(ele.commonName === element.commonName ){ this.certificateRequests.splice(index, 1);}});
              this.myTable.renderRows();
             }
     );
@@ -55,11 +58,10 @@ export class CertificateRequestTableComponent implements OnInit {
 
   decline(element){
     
-    let certificate = {id: element.uid}
-
-    this.certificateRequestService.delete(element.uid).subscribe(
+    // let certificate = {id: element.uid}
+    this.certificateRequestService.delete(element.commonName).subscribe(
       res => { 
-        this.certificateRequests.forEach((ele,index) => {if(ele.uid === element.uid ){ this.certificateRequests.splice(index, 1);}});
+        this.certificateRequests.forEach((ele,index) => {if(ele.commonName === element.commonName ){ this.certificateRequests.splice(index, 1);}});
             this.myTable.renderRows();
        },
       () => { }

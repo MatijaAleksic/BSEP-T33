@@ -7,7 +7,7 @@ import { ConfigService } from './config.service';
 })
 export class CertificateService {
 
-  revokeEmail : string;
+  revokeAlias : string;
 
   constructor(
     private apiService: ApiService,
@@ -27,10 +27,10 @@ export class CertificateService {
   }
 
 
-  setRevokeEmail(revokeEmail){
-    this.revokeEmail = revokeEmail;
+  setRevokeAlias(revokeAlias){
+    this.revokeAlias = revokeAlias;
   }
-  getRevokeEmail(){
-    return this.revokeEmail;
+  getRevokeAlias(){
+    return this.revokeAlias;
   }
 }

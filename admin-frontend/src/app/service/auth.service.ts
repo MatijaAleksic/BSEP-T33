@@ -36,9 +36,6 @@ export class AuthService {
 
     return this.apiService.post(this.config.login_url, JSON.stringify(body))
       .pipe(map((response) => {
-        console.log('Login success');
-        console.log(response);
-
         this.currentUser = response.user;
         this.userRole = response.user.roles;
 

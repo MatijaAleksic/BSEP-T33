@@ -21,11 +21,7 @@ import java.security.cert.CertificateFactory;
 import java.security.cert.X509CRL;
 import java.security.cert.X509Certificate;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Enumeration;
-import java.util.List;
+import java.util.*;
 
 import javax.annotation.PostConstruct;
 
@@ -44,6 +40,7 @@ import org.bouncycastle.operator.ContentSigner;
 import org.bouncycastle.operator.OperatorCreationException;
 import org.bouncycastle.operator.jcajce.JcaContentSignerBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import bsep.admin.DTO.CertificateDTO;
@@ -71,13 +68,16 @@ public class CertificateService {
 	@Autowired
 	private KeyStoreReader keyStoreReader;
 
+	@Value("${server.ssl.key-alias}")
+	private String adminAlias;
+
 	@PostConstruct
 	private void init() {
 		Security.addProvider(new BouncyCastleProvider());
 	}
 
 	public SubjectDataDTO getSubjectData(CertificateDTO certificateDTO) {
-		CertificateRequest request = certificateRequestService.findByEmail(certificateDTO.getEmail());
+		CertificateRequest request = certificateRequestService.findByCommonName(certificateDTO.getCommonName());
 
 		KeyPair keyPairSubject = Initialize.generateKeyPair();
 
@@ -96,7 +96,11 @@ public class CertificateService {
 
 		// Serijski broj sertifikata
 		List<Certificate> certs = getAllCertificates();
-		String sn = Integer.toString((certs.size() + 1));
+
+		//Generisi serialNumber
+		Calendar curCal = new GregorianCalendar(TimeZone.getDefault());
+		String sn = curCal.getTimeInMillis() + "";
+		//String sn = Integer.toString((certs.size() + 1));
 
 		// klasa X500NameBuilder pravi X500Name objekat koji predstavlja podatke o
 		// vlasniku
@@ -108,7 +112,8 @@ public class CertificateService {
 		builder.addRDN(BCStyle.OU, request.getOrganizationUnit());
 		builder.addRDN(BCStyle.C, request.getCommonName());
 		builder.addRDN(BCStyle.E, request.getEmail());
-		builder.addRDN(BCStyle.UID, request.getUid().toString());
+
+		builder.addRDN(BCStyle.UID, System.currentTimeMillis() + "-" + UUID.randomUUID().toString());
 
 		// Kreiraju se podaci za sertifikat, sto ukljucuje:
 		// - javni kljuc koji se vezuje za sertifikat
@@ -121,12 +126,12 @@ public class CertificateService {
 
 	}
 
-	public void generateCertificate(CertificateDTO dto) {
+	public Certificate generateCertificate(CertificateDTO dto) {
 		try {
 
 			SubjectDataDTO subjectDataDTO = getSubjectData(dto);
 
-			IssuerData caIssuer = keyStoreReader.readIssuerFromStore("admin@gmail.com");
+			IssuerData caIssuer = keyStoreReader.readIssuerFromStore(adminAlias);
 			SubjectData subjectData = subjectDataDTO.getSd();
 
 			// Posto klasa za generisanje sertifiakta ne moze da primi direktno privatni
@@ -159,64 +164,54 @@ public class CertificateService {
 
 			X509Certificate newCert = certConverter.getCertificate(certHolder);
 
-//            System.out.println("\n===== Podaci o izdavacu sertifikata =====");
-//            System.out.println(newCert.getIssuerX500Principal().getName());
-//            System.out.println("\n===== Podaci o vlasniku sertifikata =====");
-//            System.out.println(newCert.getSubjectX500Principal().getName());
-//            System.out.println("\n===== Sertifikat =====");
-//            System.out.println("-------------------------------------------------------");
-//            System.out.println(newCert);
-//            System.out.println("-------------------------------------------------------");
-
-			Certificate adminCert = keyStoreReader.readCertificate("admin@gmail.com");
+			Certificate adminCert = keyStoreReader.readCertificate(adminAlias);
 
 			CertificateFactory certFactory = CertificateFactory.getInstance("X.509");
 			InputStream in = new ByteArrayInputStream(adminCert.getEncoded());
 			X509Certificate adminNewCert = (X509Certificate) certFactory.generateCertificate(in);
 
 			Certificate[] subjectCertificateChain = { newCert, adminNewCert };
-			// Certificate[] subjectCertificateChain =
-			// keyStoreReader.readCertificateChain();
 
 			// write(String alias, PrivateKey privateKey, Certificate[] certificateChain)
-			keyStoreWriter.write(dto.getEmail(), subjectDataDTO.getPk(), subjectCertificateChain);
+			keyStoreWriter.write(dto.getCommonName(), subjectDataDTO.getPk(), subjectCertificateChain);
 			keyStoreWriter.saveKeyStore();
 
-//            // Konvertuje objekat u sertifikat
-//            return certConverter.getCertificate(certHolder);
+			return keyStoreReader.readCertificate(dto.getCommonName());
+
 
 		} catch (IllegalArgumentException | IllegalStateException | OperatorCreationException
 				| CertificateException e) {
 			e.printStackTrace();
 		}
+		return null;
 	}
 
-    public void createCertificate(CertificateDTO certificateDTO) throws CertificateException, CRLException, IOException, CertificateNotValid, MultipleAliasFound {
-
-        Certificate[] issuerCertificateChain = keyStoreReader.readCertificateChain(certificateDTO.getEmail());
-        //get issuer
-
-        X509Certificate issuer = (X509Certificate) issuerCertificateChain[0];
-        if (!isCertificateValid(issuerCertificateChain))
-            throw new CertificateNotValid("Certificate with alias " + certificateDTO.getEmail() + " is not valid");
-
-        try {
-            if (issuer.getBasicConstraints() == -1 || !issuer.getKeyUsage()[5]) { //sertifikat nije ca
-                throw new CertificatNotCa("Certificate with alias " + certificateDTO.getEmail() + " is not CertificateAuthority(CA)");
-            }
-        } catch (NullPointerException | CertificatNotCa ignored) {
-        }
-
-        //String alias = cerRequestInfoService.findOne(certificateCreationDTO.getSubjectID()).getEmail();
-        String alias = getLastAlias(certificateDTO.getEmail());
-
-
-        Certificate certInfo = keyStoreReader.readCertificate(alias);
-        if (certInfo != null) {
-            if (!isRevoked(certInfo))
-                throw new MultipleAliasFound("Found multiple aliases with name: " + alias);
-        }
-    }
+//    public void createCertificate(CertificateDTO certificateDTO) throws CertificateException, CRLException, IOException, CertificateNotValid, MultipleAliasFound {
+//
+//        Certificate[] issuerCertificateChain = keyStoreReader.readCertificateChain(certificateDTO.getCompanyName());
+//        //get issuer
+//
+//        X509Certificate issuer = (X509Certificate) issuerCertificateChain[0];
+//        if (!isCertificateValid(issuerCertificateChain))
+//            throw new CertificateNotValid("Certificate with alias " + certificateDTO.getCompanyName() + " is not valid");
+//
+//        try {
+//            if (issuer.getBasicConstraints() == -1 || !issuer.getKeyUsage()[5]) { //sertifikat nije ca
+//                throw new CertificatNotCa("Certificate with alias " + certificateDTO.getCompanyName() + " is not CertificateAuthority(CA)");
+//            }
+//        } catch (NullPointerException | CertificatNotCa ignored) {
+//        }
+//
+//        //String alias = cerRequestInfoService.findOne(certificateCreationDTO.getSubjectID()).getEmail();
+//        String alias = getLastAlias(certificateDTO.getCompanyName());
+//
+//
+//        Certificate certInfo = keyStoreReader.readCertificate(alias);
+//        if (certInfo != null) {
+//            if (!isRevoked(certInfo))
+//                throw new MultipleAliasFound("Found multiple aliases with name: " + alias);
+//        }
+//    }
 
 	public boolean isCertificateValid(Certificate[] chain) throws CertificateException, CRLException, IOException {
 
@@ -383,4 +378,9 @@ public class CertificateService {
 		os.write(bytes);
 		os.close();
 	}
+
+
+
+
+
 }

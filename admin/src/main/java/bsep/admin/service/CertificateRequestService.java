@@ -2,13 +2,13 @@ package bsep.admin.service;
 
 import bsep.admin.DTO.CertificateRequestDTO;
 import bsep.admin.Exceptions.CertificateNotFoundException;
-import bsep.admin.Exceptions.UserNotFoundException;
 import bsep.admin.model.CertificateRequest;
 import bsep.admin.repository.CertificateRequestRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CertificateRequestService {
@@ -29,48 +29,49 @@ public class CertificateRequestService {
 
     }
 
-    public CertificateRequest findByEmail(String email)
+//    public CertificateRequest findByEmail(String email)
+//    {
+//        return certificateRequestRepository.findByEmail(email);
+//    }
+
+    public CertificateRequest findByCommonName(String email)
     {
-        return certificateRequestRepository.findByEmail(email);
+        return certificateRequestRepository.findByCommonName(email);
     }
 
-    public CertificateRequest findByUid(long uid)
-    {
-        return certificateRequestRepository.findByUid(uid);
-    }
 
     public void save(CertificateRequestDTO certificateRequestDTO)
     {
         CertificateRequest cr = new CertificateRequest(certificateRequestDTO.getCommonName(),
                 certificateRequestDTO.getSurname(),certificateRequestDTO.getGivenName(),
                 certificateRequestDTO.getOrganization(),certificateRequestDTO.getOrganizationUnit(),
-                certificateRequestDTO.getCountry(),certificateRequestDTO.getEmail(),certificateRequestDTO.getUid());
+                certificateRequestDTO.getCountry(),certificateRequestDTO.getEmail(), certificateRequestDTO.getCertExtension());
 
         certificateRequestRepository.save(cr);
     }
 
 
 
-    public boolean delete(Long id) throws CertificateNotFoundException {
-        CertificateRequest cr = findOne(id);
+    public boolean delete(String commonName) throws CertificateNotFoundException {
+        CertificateRequest cr = certificateRequestRepository.findByCommonName(commonName);
         if (cr != null) {
             certificateRequestRepository.delete(cr);
             return true;
         }
         else{
-            throw new CertificateNotFoundException("Cannot find certificate by id: " + id);
+            throw new CertificateNotFoundException("Cannot find certificate by Common Name: " + commonName);
         }
 
     }
 
-    public boolean deleteByUid(Long uid) throws CertificateNotFoundException {
-        CertificateRequest cr = findByUid(uid);
+    public boolean deleteByCommonName(String commonName) throws CertificateNotFoundException {
+        CertificateRequest cr = findByCommonName(commonName);
         if (cr != null) {
             certificateRequestRepository.delete(cr);
             return true;
         }
         else{
-            throw new CertificateNotFoundException("Cannot find certificate by uid: " + uid);
+            throw new CertificateNotFoundException("Cannot find certificate by Common Name: " + commonName);
         }
 
     }

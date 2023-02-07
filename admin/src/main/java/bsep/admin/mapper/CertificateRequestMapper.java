@@ -10,12 +10,12 @@ public class CertificateRequestMapper implements MapperInterface<CertificateRequ
 
     @Override
     public CertificateRequest toEntity(CertificateRequestDTO dto) {
-        return new CertificateRequest(dto.getCommonName(),dto.getSurname(),dto.getGivenName(),dto.getOrganization(),dto.getOrganizationUnit(),dto.getCountry(),dto.getEmail(),dto.getUid());
+        return new CertificateRequest(dto.getCommonName(),dto.getSurname(),dto.getGivenName(),dto.getOrganization(),dto.getOrganizationUnit(),dto.getCountry(),dto.getEmail(), dto.getCertExtension());
     }
 
     @Override
     public CertificateRequestDTO toDto(CertificateRequest entity) {
-        return new CertificateRequestDTO(entity.getCommonName(),entity.getSurname(),entity.getGivenName(),entity.getOrganization(),entity.getOrganizationUnit(),entity.getCountry(),entity.getEmail(),entity.getUid());
+        return new CertificateRequestDTO(entity.getCommonName(),entity.getSurname(),entity.getGivenName(),entity.getOrganization(),entity.getOrganizationUnit(),entity.getCountry(),entity.getEmail(), entity.getExtension());
     }
 
     public List<CertificateRequestDTO> toDtoList(List<CertificateRequest> requests)

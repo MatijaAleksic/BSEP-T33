@@ -24,12 +24,18 @@ export class RequestCertificateComponent implements OnInit {
   returnUrl: string;
   private ngUnsubscribe: Subject<void> = new Subject<void>();
 
+  //extensions: {"crt" : string, "cer": string, "pem": string, "der": string}
+  extensions : any;
+
   constructor(
     private certificateRequestService: CertificaterequestService,
     private router: Router,
     private route: ActivatedRoute,
-    private formBuilder: FormBuilder
-  ) { }
+    private formBuilder: FormBuilder,
+
+  ) {
+    this.extensions = ["crt", "cer", "pem", "der"]
+   }
 
   ngOnInit() {
     this.route.params
@@ -49,13 +55,8 @@ export class RequestCertificateComponent implements OnInit {
       organizationUnit: ['',Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(32)])],
       country: ['',Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(32)])],
       email: ['',Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(32), Validators.email])],
-      uid: ['',Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(32)])],
+      certExtension: ['',Validators.compose([Validators.required])],
     });
-  }
-
-  ngOnDestroy() {
-    this.ngUnsubscribe.next();
-    this.ngUnsubscribe.complete();
   }
 
   onSubmit() {
@@ -64,6 +65,8 @@ export class RequestCertificateComponent implements OnInit {
      */
     this.notification = undefined;
     this.submitted = true;
+
+    console.log(this.form.value);
 
     this.certificateRequestService.create(this.form.value)
     .subscribe(data => {
@@ -75,5 +78,9 @@ export class RequestCertificateComponent implements OnInit {
           });
 
   }
+
+  // setSelection(option: string){
+  //   this.form.controls['extension'].setValue(option);
+  // }
 
 }

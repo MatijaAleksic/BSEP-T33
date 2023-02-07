@@ -2,16 +2,31 @@ package bsep.admin.DTO;
 
 public class CertificateDTO {
 
-    Long id;
     String email;
+    String commonName;
+    String extension;
 
-    public CertificateDTO(Long id, String email) {
-        this.id = id;
+    public CertificateDTO(String email, String commonName) {
         this.email = email;
+        this.commonName = commonName;
+    }
+
+    public CertificateDTO(String email, String commonName, String extension) {
+        this.email = email;
+        this.commonName = commonName;
+        this.extension = extension;
     }
 
     public CertificateDTO() {
 
+    }
+
+    public String getCommonName() {
+        return commonName;
+    }
+
+    public void setCommonName(String commonName) {
+        this.commonName = commonName;
     }
 
     public String getEmail() {
@@ -22,11 +37,11 @@ public class CertificateDTO {
         this.email = email;
     }
 
-    public Long getId() {
-        return id;
+    public String getExtension() {
+        return extension;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setExtension(String extension) {
+        this.extension = extension;
     }
 }

@@ -23,7 +23,7 @@ import { UserTableComponent } from './tables/user-table/user-table.component';
 const routes: Routes = [
   {
     path: '',
-    component: HomeComponent,
+    component:HomeComponent,
     pathMatch: 'full'
   },
   {

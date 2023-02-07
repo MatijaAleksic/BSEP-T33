@@ -41,7 +41,7 @@ export class RevokeCertificateComponent implements OnInit {
 
   ngOnInit() {
 
-    this.email = this.certificateService.getRevokeEmail();
+    this.email = this.certificateService.getRevokeAlias();
 
     this.route.params
       .pipe(takeUntil(this.ngUnsubscribe))
