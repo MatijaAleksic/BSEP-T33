@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs/Subject';
 import { takeUntil } from 'rxjs/operators';
-import { UserService } from 'src/app/service';
+import { UserService } from 'src/app/service/user.service';
 
 interface DisplayMessage {
   msgType: string;

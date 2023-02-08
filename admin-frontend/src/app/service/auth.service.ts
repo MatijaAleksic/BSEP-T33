@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpHeaders } from '@angular/common/http';
 import { ApiService } from './api.service';
-import { UserService } from './user.service';
 import { ConfigService } from './config.service';
 import { map } from 'rxjs/operators';
 import { Router } from '@angular/router';

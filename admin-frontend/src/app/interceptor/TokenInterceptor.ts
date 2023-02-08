@@ -10,7 +10,7 @@ import { AuthService } from '../service/auth.service';
 import { Observable, } from 'rxjs/Observable';
 
 import { _throw } from 'rxjs/observable/throw';
-import { UserService } from '../service';
+import { UserService } from '../service/user.service';
 
 // import * as Base64 from 'js-base64';
 // import certificateFile from 'raw-loader!../../../ssl/frontend.cer';
