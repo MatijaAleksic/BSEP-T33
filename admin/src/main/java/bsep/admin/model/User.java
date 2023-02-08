@@ -60,7 +60,7 @@ public class User implements UserDetails {
     @Column(name = "last_password_reset_date")
     private Timestamp lastPasswordResetDate;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER, cascade=CascadeType.DETACH)
     @JoinTable(name = "user_role",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
@@ -72,7 +72,7 @@ public class User implements UserDetails {
 //            inverseJoinColumns = @JoinColumn(name = "device_id", referencedColumnName = "id"))
 //    private Set<Device> devices;
 
-    @JsonIgnore
+    @JsonIgnore //home_devices, home_users, role_priviledge, user_roles
     @ManyToMany(mappedBy = "users", fetch = FetchType.LAZY)
     private Set<Home> homes;
 

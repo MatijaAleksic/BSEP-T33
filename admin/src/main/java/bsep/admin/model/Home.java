@@ -19,18 +19,17 @@ public class Home {
     private String name;
 
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER, cascade=CascadeType.MERGE)
     @JoinTable(name = "home_devices",
             joinColumns = @JoinColumn(name = "home_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "device_id", referencedColumnName = "id"))
     private Set<Device> devices;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER, cascade=CascadeType.PERSIST)
     @JoinTable(name = "home_users",
             joinColumns = @JoinColumn(name = "home_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"))
     private Set<User> users;
-
     public Home() {
     }
 

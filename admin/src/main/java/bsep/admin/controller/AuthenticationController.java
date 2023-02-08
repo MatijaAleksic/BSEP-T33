@@ -1,12 +1,8 @@
 package bsep.admin.controller;
 
-import javax.servlet.http.HttpServletResponse;
-
+import javax.servlet.http.HttpServletRequest;
 import bsep.admin.DTO.JwtAuthenticationRequest;
-import bsep.admin.DTO.UserRequest;
 import bsep.admin.DTO.UserTokenState;
-import bsep.admin.Exceptions.ResourceConflictException;
-import bsep.admin.model.Role;
 import bsep.admin.model.User;
 import bsep.admin.service.UserService;
 import bsep.admin.util.TokenUtils;
@@ -14,7 +10,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -25,10 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.util.UriComponentsBuilder;
 
-
-//Kontroler zaduzen za autentifikaciju korisnika
 @RestController
 @RequestMapping(value = "/auth", produces = MediaType.APPLICATION_JSON_VALUE)
 public class AuthenticationController {
@@ -41,14 +33,12 @@ public class AuthenticationController {
     @Autowired
     private AuthenticationManager authenticationManager;
 
-    @Autowired
-    private UserService userService;
 
     // Prvi endpoint koji pogadja korisnik kada se loguje.
     // Tada zna samo svoje korisnicko ime i lozinku i to prosledjuje na backend.
     @PostMapping("/login")
     public ResponseEntity<UserTokenState> createAuthenticationToken(
-            @RequestBody JwtAuthenticationRequest authenticationRequest, HttpServletResponse response) {
+            @RequestBody JwtAuthenticationRequest authenticationRequest, HttpServletRequest request) {
 
 
         // Ukoliko kredencijali nisu ispravni, logovanje nece biti uspesno, desice se
@@ -74,7 +64,10 @@ public class AuthenticationController {
         headers.add("Set-Cookie", cookie);
 
         // Vrati token kao odgovor na uspesnu autentifikaciju
-        LOG.info("User Logged in!");
+
+
+        LOG.info("Received request from ip {}: {} {}", request.getRemoteAddr(), request.getMethod(), request.getRequestURI());
+
         return ResponseEntity.ok().headers(headers).body(new UserTokenState(jwt, expiresIn, user));
     }
 
