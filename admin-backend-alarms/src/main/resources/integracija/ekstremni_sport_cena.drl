@@ -1,0 +1,37 @@
+//package sbnz.integracija;
+//
+//import app.dto.QuerySportDTO;
+//import app.model.EkstremniSport;
+//import app.enums.CenaSporta;
+//
+//import java.util.List
+//
+//rule "Filter JEFTINO for EKSTREMNI sports"
+//    when
+//        $query: QuerySportDTO(tipSporta == TipSporta.EKSTREMNI  && odabrani_tip != null  && cena == CenaSporta.JEFTINO)
+//        $ekstremni : List() from collect ( EkstremniSport(cena == CenaSporta.JEFTINO) from $query.odabrani_tip )
+//    then
+//    	$query.setOdabrani_tip($ekstremni);
+//    	$query.setCena(null);
+//        update($query);
+//end
+//
+//rule "Filter SREDNJE for EKSTREMNI sports"
+//    when
+//        $query: QuerySportDTO(tipSporta == TipSporta.EKSTREMNI  && odabrani_tip != null && cena == CenaSporta.SREDNJE)
+//        $ekstremni : List() from collect ( EkstremniSport(cena == CenaSporta.SREDNJE ||  cena == CenaSporta.JEFTINO) from $query.odabrani_tip )
+//    then
+//    	$query.setOdabrani_tip($ekstremni);
+//    	$query.setCena(null);
+//        update($query);
+//end
+//
+//rule "Filter SKUPO for EKSTREMNI sports"
+//    when
+//        $query: QuerySportDTO(tipSporta == TipSporta.EKSTREMNI  && odabrani_tip != null && cena == CenaSporta.SKUPO)
+//        $ekstremni : List() from collect ( EkstremniSport(cena == CenaSporta.SKUPO || cena == CenaSporta.SREDNJE || cena == CenaSporta.JEFTINO) from $query.odabrani_tip )
+//    then
+//    	$query.setOdabrani_tip($ekstremni);
+//    	$query.setCena(null);
+//        update($query);
+//end

@@ -1,0 +1,12 @@
+package admin.backend.drools;
+
+import backend.admin.DTO.TestDTO;
+
+
+rule "Test"
+    when
+        $tmp: IdentificationDTO( id == 0)
+    then
+    	$tmp.setName("Petar");
+        update($tmp);
+end

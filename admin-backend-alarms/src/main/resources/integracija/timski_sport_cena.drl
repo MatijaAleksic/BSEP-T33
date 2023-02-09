@@ -1,0 +1,37 @@
+//package sbnz.integracija;
+//
+//import app.dto.QuerySportDTO;
+//import app.model.TimskiSport;
+//import app.enums.CenaSporta;
+//
+//import java.util.List
+//
+//rule "Filter JEFTINO for TIMSKI sports"
+//    when
+//        $query: QuerySportDTO(tipSporta == TipSporta.TIMSKI  && odabrani_tip != null && cena == CenaSporta.JEFTINO)
+//        $timski : List() from collect ( TimskiSport(cena == CenaSporta.JEFTINO) from $query.odabrani_tip )
+//    then
+//    	$query.setOdabrani_tip($timski);
+//    	$query.setCena(null);
+//        update($query);
+//end
+//
+//rule "Filter SREDNJE for TIMSKI sports"
+//    when
+//        $query: QuerySportDTO(tipSporta == TipSporta.TIMSKI  && odabrani_tip != null && cena == CenaSporta.SREDNJE)
+//        $timski : List() from collect ( TimskiSport(cena == CenaSporta.SREDNJE || cena == CenaSporta.JEFTINO) from $query.odabrani_tip )
+//    then
+//    	$query.setOdabrani_tip($timski);
+//    	$query.setCena(null);
+//        update($query);
+//end
+//
+//rule "Filter SKUPO for TIMSKI sports"
+//    when
+//        $query: QuerySportDTO(tipSporta == TipSporta.TIMSKI  && odabrani_tip != null && cena == CenaSporta.SKUPO)
+//        $timski : List() from collect ( TimskiSport(cena == CenaSporta.SKUPO || cena == CenaSporta.SREDNJE || cena == CenaSporta.JEFTINO) from $query.odabrani_tip )
+//    then
+//    	$query.setOdabrani_tip($timski);
+//    	$query.setCena(null);
+//        update($query);
+//end

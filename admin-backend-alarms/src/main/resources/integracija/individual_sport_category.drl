@@ -1,0 +1,36 @@
+//package sbnz.integracija;
+//
+//import app.dto.QuerySportDTO;
+//import app.model.IndividualniSport;
+//import app.model.IndividualnaKategorija;
+//import app.enums.IndividualnaPodkategorija;
+//
+//import app.enums.CenaSporta;
+//
+//import java.util.List
+//import java.util.ArrayList;
+//
+//
+//rule "Filter PODKATEGORIJE for INDIVIDUALNI sports "
+//    when
+//        $query: QuerySportDTO($podkat: indPodkategorija, $sports : odabrani_tip, tipSporta == TipSporta.INDIVIDUALNI  && odabrani_tip != null && indPodkategorija != null && cena == null);
+//
+//        $sportovi : List() from accumulate(
+//        	IndividualniSport($sport : this, kategorije.size() > 0) from $sports,
+//        	init(List<IndividualniSport> results = new ArrayList<IndividualniSport>(); ),
+//        	action(
+//        			for( IndividualnaKategorija kat : $sport.getKategorije()){
+//        				if(kat.getPodkategorija() == $podkat){
+//        					results.add($sport);
+//        				}
+//        			}
+//        		),
+//        	result(results)
+//        )
+//
+//    then
+//    	$query.setOdabrani_tip($sportovi);
+//    	$query.setIndPodkategorija(null);
+//        update($query);
+//end
+//

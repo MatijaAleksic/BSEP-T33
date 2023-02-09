@@ -1,0 +1,62 @@
+//package sbnz.integracija;
+//
+//import app.model.BMI;
+//import app.enums.BMIStatus;
+//
+//rule "Set BMI Status - EKSTREMNA_PODGOJENOST"
+//    when
+//        $bmi: BMI(status == BMIStatus.NA  && score < 16.0 && score > 0)
+//    then
+//    	$bmi.setStatus(BMIStatus.EKSTREMNA_PODGOJENOST);
+//        update($bmi);
+//end
+//
+//rule "Set BMI Status - PODGOJENOST"
+//    when
+//        $bmi: BMI(status == BMIStatus.NA  &&  score >= 16.0 && score < 18.4)
+//    then
+//    	$bmi.setStatus(BMIStatus.PODGOJENOST);
+//        update($bmi);
+//end
+//
+//rule "Set BMI Status - ZDRAV"
+//    when
+//        $bmi: BMI(status == BMIStatus.NA  &&  score >= 18.4 && score < 24.9)
+//    then
+//    	$bmi.setStatus(BMIStatus.ZDRAV);
+//        update($bmi);
+//end
+//
+//rule "Set BMI Status - PREKOMERNA_TEZINA"
+//    when
+//        $bmi: BMI(status == BMIStatus.NA  &&  score >= 24.9 && score < 29.9)
+//    then
+//    	$bmi.setStatus(BMIStatus.PREKOMERNA_TEZINA);
+//        update($bmi);
+//end
+//
+//rule "Set BMI Status - UMERENA_GOJAZNOST"
+//    when
+//        $bmi: BMI(status == BMIStatus.NA  &&   score >= 24.9 && score < 34.9)
+//    then
+//    	$bmi.setStatus(BMIStatus.UMERENA_GOJAZNOST);
+//        update($bmi);
+//end
+//
+//rule "Set BMI Status - GOJAZNOST"
+//    when
+//        $bmi: BMI(status == BMIStatus.NA  &&   score >= 24.9 && score < 39.9)
+//    then
+//    	$bmi.setStatus(BMIStatus.UMERENA_GOJAZNOST);
+//        update($bmi);
+//end
+//
+//rule "Set BMI Status - EKSTREMNA_GOJAZNOST"
+//    when
+//        $bmi: BMI(status == BMIStatus.NA  &&  score >= 40.0)
+//    then
+//    	$bmi.setStatus(BMIStatus.EKSTREMNA_GOJAZNOST);
+//        update($bmi);
+//end
+//
+//

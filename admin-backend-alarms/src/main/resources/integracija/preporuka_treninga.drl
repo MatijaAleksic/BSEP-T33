@@ -1,0 +1,36 @@
+//package sbnz.integracija;
+//
+//import .dto.PreporukaTreningaDTO;
+//import app.enums.BMIStatus;
+//import app.enums.KrvniPritisakStatus;
+//
+//
+//
+//
+//rule "Povecaj vezbe kardio HIPERTENZIJA 2 ili GOJAZNOST"
+//	no-loop
+//	when
+//		$pt : PreporukaTreningaDTO(kpStatus == KrvniPritisakStatus.HIPERTENZIJA_2 && (bmiStatus == BMIStatus.GOJAZNOST || bmiStatus == BMIStatus.EKSTREMNA_GOJAZNOST))
+//	then
+//		$pt.incrementKardio();
+//		$pt.incrementKardio();
+//		update($pt);
+//end
+//
+//rule "Povecaj vezbe kardio HIPERTENZIJA 1 ili PREKOMERNA_TEZINA"
+//	no-loop
+//	when
+//		$pt : PreporukaTreningaDTO(kpStatus == KrvniPritisakStatus.HIPERTENZIJA_1 && (bmiStatus == BMIStatus.PREKOMERNA_TEZINA || bmiStatus == BMIStatus.UMERENA_GOJAZNOST))
+//	then
+//		$pt.incrementKardio();
+//		update($pt);
+//end
+//
+//rule "Povecaj vezbe snage NORMALAN ili PODGOJENOST"
+//	no-loop
+//	when
+//		$pt : PreporukaTreningaDTO(kpStatus == KrvniPritisakStatus.NORMALAN && (bmiStatus == BMIStatus.EKSTREMNA_PODGOJENOST || bmiStatus == BMIStatus.PODGOJENOST))
+//	then
+//		$pt.incrementSnaga();
+//		update($pt);
+//end

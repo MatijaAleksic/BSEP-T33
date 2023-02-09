@@ -1,0 +1,37 @@
+//package sbnz.integracija;
+//
+//import app.dto.QuerySportDTO;
+//import app.model.IndividualniSport;
+//import app.enums.CenaSporta;
+//
+//import java.util.List
+//
+//rule "Filter JEFTINO for INDIVIDUALNI sports"
+//    when
+//        $query: QuerySportDTO(tipSporta == TipSporta.INDIVIDUALNI  && odabrani_tip != null && cena == CenaSporta.JEFTINO)
+//        $individualni : List() from collect ( IndividualniSport(cena == CenaSporta.JEFTINO) from $query.odabrani_tip )
+//    then
+//    	$query.setOdabrani_tip($individualni);
+//    	$query.setCena(null);
+//        update($query);
+//end
+//
+//rule "Filter SREDNJE for INDIVIDUALNI sports"
+//    when
+//        $query: QuerySportDTO(tipSporta == TipSporta.INDIVIDUALNI  && odabrani_tip != null  && cena == CenaSporta.SREDNJE)
+//        $individualni : List() from collect ( IndividualniSport(cena == CenaSporta.SREDNJE || cena == CenaSporta.JEFTINO) from $query.odabrani_tip )
+//    then
+//    	$query.setOdabrani_tip($individualni);
+//    	$query.setCena(null);
+//        update($query);
+//end
+//
+//rule "Filter SKUPO for INDIVIDUALNI sports"
+//    when
+//        $query: QuerySportDTO(tipSporta == TipSporta.INDIVIDUALNI  && odabrani_tip != null && cena == CenaSporta.SKUPO)
+//        $individualni : List() from collect ( IndividualniSport(cena == CenaSporta.SKUPO || cena == CenaSporta.SREDNJE || cena == CenaSporta.JEFTINO) from $query.odabrani_tip )
+//    then
+//    	$query.setOdabrani_tip($individualni);
+//    	$query.setCena(null);
+//        update($query);
+//end

@@ -28,8 +28,10 @@ export class TokenInterceptor implements HttpInterceptor {
     }
 
 
+
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
+    console.log();
     if (this.auth.tokenIsPresent()) {
       // console.log(this.auth.getExpires().expiresIn)
       // console.log(new Date().setMinutes(new Date().getMinutes() + 120))

@@ -1,0 +1,29 @@
+//package sbnz.integracija;
+//
+//import app.dto.QuerySportDTO;
+//import app.enums.TipSporta;
+//
+//
+//rule "Filter all INDIVIDUALNI sports"
+//    when
+//        $query: QuerySportDTO(tipSporta == TipSporta.INDIVIDUALNI  && individualniSportovi != null && timskiSports != null && ekstremniSports != null)
+//    then
+//    	$query.izaberiTipSporta(TipSporta.INDIVIDUALNI);
+//        update($query);
+//end
+//
+//rule "Filter all EKSTREMNI sports"
+//    when
+//        $query: QuerySportDTO(tipSporta == TipSporta.EKSTREMNI  && individualniSportovi != null && timskiSports != null && ekstremniSports != null)
+//    then
+//    	$query.izaberiTipSporta(TipSporta.EKSTREMNI);
+//        update($query);
+//end
+//
+//rule "Filter all TIMSKI sports"
+//    when
+//        $query: QuerySportDTO(tipSporta == TipSporta.TIMSKI  && individualniSportovi != null &&  timskiSports != null && ekstremniSports != null)
+//    then
+//    	$query.izaberiTipSporta(TipSporta.TIMSKI);
+//        update($query);
+//end

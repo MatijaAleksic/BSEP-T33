@@ -1,0 +1,34 @@
+//package sbnz.integracija;
+//
+//import app.dto.QuerySportDTO;
+//import app.model.EkstremniSport;
+//import app.model.EkstremnaKategorija;
+//import app.enums.EkstremnaPodkategorija;
+//
+//import app.enums.CenaSporta;
+//
+//import java.util.List
+//
+//rule "Filter PODKATEGORIJE for EKSTREMNI sports "
+//    when
+//        $query: QuerySportDTO($podkat: eksPodkategorija, $sports : odabrani_tip, tipSporta == TipSporta.EKSTREMNI  && odabrani_tip != null && eksPodkategorija != null && cena == null);
+//
+//        $sportovi : List() from accumulate(
+//        	EkstremniSport($sport : this, kategorije.size() > 0) from $sports,
+//        	init(List<EkstremniSport> results = new ArrayList<EkstremniSport>(); ),
+//        	action(
+//        			for( EkstremnaKategorija kat : $sport.getKategorije()){
+//        				if(kat.getPodkategorija() == $podkat){
+//        					results.add($sport);
+//        				}
+//        			}
+//        		),
+//        	result(results)
+//        )
+//
+//    then
+//    	$query.setOdabrani_tip($sportovi);
+//    	$query.setEksPodkategorija(null);
+//        update($query);
+//end
+//

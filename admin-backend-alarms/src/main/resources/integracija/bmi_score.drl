@@ -1,0 +1,13 @@
+//package sbnz.integracija;
+//
+//import app.model.BMI;
+//import app.enums.BMIStatus;
+//
+//
+//rule "Calculate BMI Score"
+//    when
+//        $bmi: BMI(status == BMIStatus.NA  && score == 0)
+//    then
+//    	$bmi.calculateBmiScore();
+//        update($bmi);
+//end

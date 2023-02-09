@@ -1,0 +1,37 @@
+//package sbnz.integracija;
+//
+//import app.dto.QuerySportDTO;
+//import app.model.EkstremniSport;
+//import app.model.EkstremnaKategorija;
+//import app.enums.EkstremnaPodkategorija;
+//
+//import app.enums.CenaSporta;
+//
+//import java.util.List
+//
+//rule "Caluculate scores for EKSTREMNI sports "
+//no-loop
+//    when
+//        $query: QuerySportDTO(
+//	        $sports : odabrani_tip,
+//
+//	        $preciznost : preciznost,
+//	        $izdrzljivost : izdrzljivost,
+//	        $tehnika : tehnika,
+//	        $brzina : brzina,
+//	        $snaga : snaga,
+//
+//	        tipSporta == TipSporta.EKSTREMNI && eksPodkategorija == null && cena == null && odabrani_tip != null);
+//
+//	    Number($max: doubleValue) from accumulate(
+//	    	EkstremniSport($current : this) from $sports,
+//	    	max($current.calculateMatchScore($query.preciznost,$query.izdrzljivost,$query.tehnika,$query.brzina,$query.snaga))
+//	    );
+//
+//	    $sport : EkstremniSport(this.calculateMatchScore($query.preciznost,$query.izdrzljivost,$query.tehnika,$query.brzina,$query.snaga) == $max) from $sports;
+//
+//    then
+//    	$query.setOdabraniSport($sport);
+//        update($query);
+//end
+//

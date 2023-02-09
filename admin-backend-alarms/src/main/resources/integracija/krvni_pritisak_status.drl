@@ -1,0 +1,36 @@
+//package sbnz.integracija;
+//
+//import app.model.KrvniPritisak;
+//import app.enums.KrvniPritisakStatus;
+//
+//rule "Set Krvni Pritisak Status - NORMALAN"
+//    when
+//        $kp: KrvniPritisak(status == KrvniPritisakStatus.NA  && gornji_pritisak < 120.0 && donji_pritisak < 80)
+//    then
+//    	$kp.setStatus(KrvniPritisakStatus.NORMALAN);
+//        update($kp);
+//end
+//
+//rule "Set Krvni Pritisak Status - PREDHIPERTENZIJA"
+//    when
+//        $kp: KrvniPritisak(status == KrvniPritisakStatus.NA  && gornji_pritisak >= 120.0 && gornji_pritisak < 139.0 && donji_pritisak >= 80 && donji_pritisak < 89)
+//    then
+//    	$kp.setStatus(KrvniPritisakStatus.PREDHIPERTENZIJA);
+//        update($kp);
+//end
+//
+//rule "Set Krvni Pritisak Status - HIPERTENZIJA_1"
+//    when
+//        $kp: KrvniPritisak(status == KrvniPritisakStatus.NA  && gornji_pritisak >= 139.0 && gornji_pritisak < 159.0 && donji_pritisak >= 89 && donji_pritisak < 99)
+//    then
+//    	$kp.setStatus(KrvniPritisakStatus.HIPERTENZIJA_1);
+//        update($kp);
+//end
+//
+//rule "Set Krvni Pritisak Status - HIPERTENZIJA_2"
+//    when
+//        $kp: KrvniPritisak(status == KrvniPritisakStatus.NA  && gornji_pritisak >= 159.0 && donji_pritisak >= 99)
+//    then
+//    	$kp.setStatus(KrvniPritisakStatus.HIPERTENZIJA_2);
+//        update($kp);
+//end
